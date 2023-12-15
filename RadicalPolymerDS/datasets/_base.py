@@ -139,7 +139,7 @@ def QCValuesFromSMILES(*smi, csv_file="", with_nan=False, with_smiles=False):
                                           with_nan=with_nan,
                                           with_smiles=True)
             preserve = pd.concat([preserve, new_data])
-    else:
+    else: # No case should come here.
         preserve = pd.DataFrame(columns=data.columns)
 
     if with_smiles:
@@ -148,12 +148,19 @@ def QCValuesFromSMILES(*smi, csv_file="", with_nan=False, with_smiles=False):
         return preserve.drop(["Radical", "Monomer"], axis=1)
 
 
-def load_testset(*, N=10):
-    data = list(range(N))
-    target = list(range(N))
-    return Bunch(
-        data=data,
-        target=target
-    )
+def getAvailableSMILES(csv_file=""):
+    """ Returns a list of SMILES registered in the feature dataset.
 
+    Expranation
 
+    Returns:
+        list
+    """
+
+    global _QCValues
+
+    if type(_QCValues) == str:
+        _load_QCValues(csv_file)
+    data = _QCValues["data"]
+
+    return list(set(data["Radical"]) | set(data["Monomer"]))

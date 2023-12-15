@@ -2,5 +2,5 @@
 
 from ._base import (
         QCValuesFromSMILES,
-        load_testset
+        getAvailableSMILES
     )
