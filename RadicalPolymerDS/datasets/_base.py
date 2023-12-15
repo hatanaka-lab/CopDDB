@@ -5,7 +5,7 @@ import pandas as pd
 import textwrap
 
 
-from ..utils import Bunch
+from ..utils import Bunch, canonical_smiles
 
 
 _QCValues = "" #
@@ -36,9 +36,28 @@ def QCValuesFromSMILES(*smi, csv_file="", with_nan=False, with_smiles=False):
     if type(_QCValues) == str:
         if os.path.exists(csv_path):
             data = pd.read_csv(csv_path)
+
+            # Canonicalize SMILES.
+            cansmi_list = []
+            for targ in ["Radical", "Monomer"]:
+                for i in data.index:
+                    smi = data[targ][i]
+                    if smi in cansmi_list:
+                        continue
+                    cansmi = canonical_smiles(smi)
+                    # 変換に失敗した場合
+                    if not cansmi:
+                        print(f"{smi} cannot be converted into ", end="")
+                        print("canonical SMILES.")
+                        cansmi = np.NaN
+                    data.loc[data["Radical"] == smi, "Radical"] = cansmi
+                    data.loc[data["Monomer"] == smi, "Monomer"] = cansmi
+                    # Canonical SMILES をリストに記録する
+                    cansmi_list.append(cansmi)
+
             _QCValues = Bunch(
                             data=data,
-                            dataCount=data.index,
+                            initDataCount=data.index,
                             csv_file=csv_file
                              )
         else:
@@ -57,16 +76,17 @@ def QCValuesFromSMILES(*smi, csv_file="", with_nan=False, with_smiles=False):
         """))
 
     elif len(smi_arr.shape) == 1:
-        label = data["Radical"] == smi_arr[0]
-        label &= data["Monomer"] == smi_arr[1]
+        cansmi_rad = canonical_smiles(smi_arr[0])
+        cansmi_mon = canonical_smiles(smi_arr[1])
+        label = data["Radical"] == cansmi_rad
+        label &= data["Monomer"] == cansmi_mon
         # データが無い場合
         if not label.any():
             # 新しい空の行を追加する
-            i = label.size
-            new_data = pd.DataFrame({"Radical": [smi_arr[0]],
-                                     "Monomer": [smi_arr[1]]},
+            new_data = pd.DataFrame({"Radical": [cansmi_rad],
+                                     "Monomer": [cansmi_mon]},
                                      index=[label.size])
-            _QCValues["data"] = pd.concat([data, new_data])
+            _QCValues["data"] = pd.concat([data, new_data], sort=False)
             if with_nan:
                 preserve = _QCValues["data"].tail(1)
             else:
