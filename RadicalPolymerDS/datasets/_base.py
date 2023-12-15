@@ -1,4 +1,5 @@
 import csv
+from glob import glob
 import os
 import numpy as np
 import pandas as pd
@@ -8,16 +9,71 @@ import textwrap
 from ..utils import Bunch, canonical_smiles
 
 
-_QCValues = "" #
+# A DataFrame object that hold data obtained from
+# quantum chemical calculations.
+_QCValues = ""
+
+
+def _load_QCValues(csv_file=""):
+    """ Functions for reading data on propagation reactions.
+
+    Explanation
+
+    Args:
+        csv_file (str): csv file.
+
+    Returns:
+        None
+    """
+
+    global _QCValues
+
+    if not csv_file:
+        files = glob(os.path.dirname(__file__)+"/data/PropagationQuantumC*csv")
+        files.sort()
+        csv_file = os.path.basename(files[-1])
+    csv_path = f"{os.path.dirname(__file__)}/data/{csv_file}"
+
+    if os.path.exists(csv_path):
+        data = pd.read_csv(csv_path)
+ 
+        # Canonicalize SMILES.
+        cansmi_list = []
+        for targ in ["Radical", "Monomer"]:
+            for i in data.index:
+                inpsmi = data[targ][i]
+                if inpsmi in cansmi_list:
+                    continue
+                cansmi = canonical_smiles(inpsmi)
+                # 変換に失敗した場合
+                if not cansmi:
+                    print(f"{inpsmi} cannot be converted into ", end="")
+                    print("canonical SMILES.")
+                    cansmi = np.NaN
+                data.loc[data["Radical"] == inpsmi, "Radical"] = cansmi
+                data.loc[data["Monomer"] == inpsmi, "Monomer"] = cansmi
+                # Canonical SMILES をリストに記録する
+                cansmi_list.append(cansmi)
+ 
+        _QCValues = Bunch(
+                        data=data,
+                        initDataCount=data.index,
+                        csv_file=csv_file
+                         )
+    else:
+        print(f"{csv_file} does not exist in {os.path.dirname(__file__)}.")
+        files = glob(os.path.dirname(__file__)+"/data/PropagationQuantumC*csv")
+        print("The following files are available instead")
+        for file in files:
+            print(os.path.basename(file))
 
 
 def QCValuesFromSMILES(*smi, csv_file="", with_nan=False, with_smiles=False):
-    """ Title
-
-    text
+    """ Return a pandas DataFrame containing the data corresponding to the
+        input SMILES.
 
     Args:
-        smi (str):
+        smi (str or list): 
 
     Returns:
         pandas.DataFrame
@@ -29,41 +85,9 @@ def QCValuesFromSMILES(*smi, csv_file="", with_nan=False, with_smiles=False):
 
     global _QCValues
 
-    if not csv_file:
-        csv_file = "PropagationQuantumChem_2023-12-13.csv"
-    csv_path = f"{os.path.dirname(__file__)}/data/{csv_file}"
-
     if type(_QCValues) == str:
-        if os.path.exists(csv_path):
-            data = pd.read_csv(csv_path)
-
-            # Canonicalize SMILES.
-            cansmi_list = []
-            for targ in ["Radical", "Monomer"]:
-                for i in data.index:
-                    smi = data[targ][i]
-                    if smi in cansmi_list:
-                        continue
-                    cansmi = canonical_smiles(smi)
-                    # 変換に失敗した場合
-                    if not cansmi:
-                        print(f"{smi} cannot be converted into ", end="")
-                        print("canonical SMILES.")
-                        cansmi = np.NaN
-                    data.loc[data["Radical"] == smi, "Radical"] = cansmi
-                    data.loc[data["Monomer"] == smi, "Monomer"] = cansmi
-                    # Canonical SMILES をリストに記録する
-                    cansmi_list.append(cansmi)
-
-            _QCValues = Bunch(
-                            data=data,
-                            initDataCount=data.index,
-                            csv_file=csv_file
-                             )
-        else:
-            return None
-    else:
-        data = _QCValues["data"]
+        _load_QCValues(csv_file)
+    data = _QCValues["data"]
 
     smi_arr = np.array(smi)
     if (len(smi_arr.shape) == 1 and smi_arr.shape[0] < 2) or \
@@ -104,9 +128,9 @@ def QCValuesFromSMILES(*smi, csv_file="", with_nan=False, with_smiles=False):
                 preserve = pd.DataFrame(columns=data.columns)
 
     elif len(smi_arr.shape) == 2:
-        return QCValuesFromSMILES(smi_arr[0, 0], smi_arr[0, 1],
-                                  with_nan=with_nan,
-                                  with_smiles=True)
+        preserve = QCValuesFromSMILES(smi_arr[0, 0], smi_arr[0, 1],
+                                      with_nan=with_nan,
+                                      with_smiles=True)
 
     elif len(smi_arr.shape) == 3:
         preserve = pd.DataFrame(columns=data.columns)
