@@ -14,6 +14,47 @@ from ..utils import Bunch, canonical_smiles
 _QCValues = ""
 
 
+def buildVariablesFromSMILESandY(smiles=[], y=[], with_nan=False):
+    """
+
+    Expranation
+
+    Args:
+        smiles (list):
+        y (list):
+
+    Returns:
+        Bunch('data': DataFrame, "target": array)
+    """
+    if len(smiles) != len(y):
+        print("The lengths of smiles and y must be the same.")
+        print(f"len(smiles): {len(smiles)}\nlen(y)     : {len(y)}")
+    data = QCValuesFromSMILES(smiles, with_nan=True)
+    label = data.any(axis=1)
+    return Bunch(
+               data=data[label],
+               target=np.array(y)[label]
+           )
+
+
+def getAvailableSMILES(csv_file=""):
+    """ Returns a list of SMILES registered in the feature dataset.
+
+    Expranation
+
+    Returns:
+        list
+    """
+
+    global _QCValues
+
+    if type(_QCValues) == str:
+        _load_QCValues(csv_file)
+    data = _QCValues["data"]
+
+    return list(set(data["Radical"]) | set(data["Monomer"]))
+
+
 def _load_QCValues(csv_file=""):
     """ Functions for reading data on propagation reactions.
 
@@ -146,21 +187,3 @@ def QCValuesFromSMILES(*smi, csv_file="", with_nan=False, with_smiles=False):
         return preserve
     else:
         return preserve.drop(["Radical", "Monomer"], axis=1)
-
-
-def getAvailableSMILES(csv_file=""):
-    """ Returns a list of SMILES registered in the feature dataset.
-
-    Expranation
-
-    Returns:
-        list
-    """
-
-    global _QCValues
-
-    if type(_QCValues) == str:
-        _load_QCValues(csv_file)
-    data = _QCValues["data"]
-
-    return list(set(data["Radical"]) | set(data["Monomer"]))
