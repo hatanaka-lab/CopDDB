@@ -14,7 +14,9 @@ from ..utils import Bunch, canonical_smiles
 _QCValues = ""
 
 
-def buildVariablesFromSMILESandY(smiles=[], y=[], with_nan=False):
+def buildVariablesFromSMILESandY(smiles=[], y=[],
+                                 with_nan=False,
+                                 with_smiles=False):
     """
 
     Expranation
@@ -29,12 +31,37 @@ def buildVariablesFromSMILESandY(smiles=[], y=[], with_nan=False):
     if len(smiles) != len(y):
         print("The lengths of smiles and y must be the same.")
         print(f"len(smiles): {len(smiles)}\nlen(y)     : {len(y)}")
-    data = QCValuesFromSMILES(smiles, with_nan=True)
-    label = data.any(axis=1)
-    return Bunch(
-               data=data[label],
-               target=np.array(y)[label]
-           )
+        return None
+
+    data = QCValuesFromSMILES(smiles, with_nan=True, with_smiles=with_smiles)
+    label = data.isnull().any(axis=1)
+
+    if with_nan:
+        return Bunch(
+                   data=data,
+                   target=np.array(y)
+               )
+    else:
+        return Bunch(
+                   data=data[~label],
+                   target=np.array(y)[~label]
+               )
+
+
+def getAvailableFeatures(csv_file=""):
+    """ Return keys in the feature dataset.
+
+    Expranation
+
+    Returns:
+        list
+    """
+
+    global _QCValues
+
+    if type(_QCValues) == str:
+        _load_QCValues(csv_file)
+    return list(_QCValues["data"].keys())
 
 
 def getAvailableSMILES(csv_file=""):
