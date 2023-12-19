@@ -1,5 +1,12 @@
 "Module Descriptions"
 
+
 from ._base import (
-      load_testset
-   )
+        buildVariablesFromSMILESandY,
+        getAvailableFeatures,
+        getAvailableSMILES,
+        QCValuesFromSMILES,
+    )
+from ._extended import (
+        buildPairVariablesFromSMILESandY,
+    )
