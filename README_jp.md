@@ -97,6 +97,8 @@ smi_list = [
 ]
 
 features = datasets.QCValuesFromSMILES(smi_list)
+
+print(features)
 ```
 出力
 ```
@@ -108,3 +110,53 @@ features = datasets.QCValuesFromSMILES(smi_list)
 [3 rows x 26 columns]
 ```
 
+### 使用例 2. SMILES のリストと目的変数のリストからデータセットを作る (前処理)
+この例では `datasets.buildVariablesFromSMILESandY()` 関数を使って SMILES 文字列と目的変数から、特徴量 (説明変数) と目的変数を含むデータセットを作ります。この関数は特徴量に欠損値がある場合の欠損値の除去に便利です。作られるデータセットは `Bunch` オブジェクトで返されます。
+
+```python 
+from RadicalPolymerDS import datasets
+
+smi_list = [
+    ["C=C(C)C(=O)OC", "C=C(C)C(=O)OC"],
+    ["C=C(C)C(=O)OC", "C=CC(=O)O"],
+    ["CO/C=C\C(=O)OC", "C=Cc1ccccc1"],
+    ["C=C", "C=C"] # 欠損値になる SMILES ペア
+]
+
+target = [1, 2, 3, 4]
+
+ds = datasets.buildVariablesFromSMILESandY(smi_list, target)
+```
+作られた `Bunch` オブジェクトは説明変数を含む `data` と目的変数を含む `target` を含みます。それぞれの中身を確認すると以下のようになります。
+```python
+>>> ds.keys()
+dict_keys(['data', 'target'])
+
+>>> print(ds["data"])
+     DE_decomposition_tail  DE_decomposition_head  DE_precursor     DE_TS  ...  Real_theta  Volume_MonteCarlo_Mon  Volume_MonteCarlo_Rad  CCdist_TS
+0                 0.038534               0.061518     -0.017766 -0.005547  ...  257.946990                79.4279               103.2494   2.254882
+28                0.038534               0.061518     -0.004842  0.008555  ...   41.350879                54.3487               103.2494   2.248237
+152               0.045085               0.045173     -0.014617 -0.003731  ...   33.562987                89.4457               103.2451   2.409667
+
+[3 rows x 26 columns]
+
+>>> print(ds["target"])
+[1 2 3]
+```
+
+使用例 1 と同様に欠損値を明示したい場合は `with_nan` (初期値は `False`) オプションを使うことができます。
+```python
+>>> ds = datasets.buildVariablesFromSMILESandY(smi_list, target, with_nan=True)
+
+>>> print(ds["data"])
+      DE_decomposition_tail  DE_decomposition_head  DE_precursor     DE_TS  ...  Real_theta  Volume_MonteCarlo_Mon  Volume_MonteCarlo_Rad  CCdist_TS
+0                  0.038534               0.061518     -0.017766 -0.005547  ...  257.946990                79.4279               103.2494   2.254882
+28                 0.038534               0.061518     -0.004842  0.008555  ...   41.350879                54.3487               103.2494   2.248237
+152                0.045085               0.045173     -0.014617 -0.003731  ...   33.562987                89.4457               103.2451   2.409667
+2500                    NaN                    NaN           NaN       NaN  ...         NaN                    NaN                    NaN        NaN
+
+[4 rows x 26 columns]
+
+>>> print(ds["target"])
+[1 2 3 4]
+```
