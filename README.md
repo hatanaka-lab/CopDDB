@@ -1,3 +1,3 @@
-[README in Japanese](https://github.com/hatanaka-lab/RadicalPolymerDS/README_jp.md)
+[README in Japanese](./README_jp.md)
 
 # RadicalPolymerDS
