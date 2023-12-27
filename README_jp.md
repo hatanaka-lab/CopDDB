@@ -1,20 +1,21 @@
-[README in Japanese](./README_jp.md)
+[README in English](./README.md)
 
 # CopDDB
 
-## Overview
-This repository has been created to distribute a dataset that collects various descriptors related to the propagation of polymers, obtained from quantum chemical calculations. It is intended to be useful to the polymer chemistry and computer science communities.
+## 概要
+このリポジトリは、量子化学計算によって得られたポリマーの伝搬反応に関するさまざまな記述子を集めたデータセットを配布するために作成されました。ポリマーに関する化学・情報科学コミュニティに役立つことを目指しています。
 
-## Contents of CopDDB
-The dataset is provided in [csv](./CopDDB/datasets/data/PropagationQuantumChem_2023-12-13.csv) format and contains a variety of descriptors for chemical reactions. The descriptors include in the dataset are as follows.
+## データベースの内容
+データセットは csv 形式で提供されており、化学反応に関する多様な記述子を含んでいます。([csv](./CopDDB/datasets/data/PropagationQuantumChem_2023-12-13.csv))
+データセットに含まれる記述子は以下の通りです。
 
-|Descriptor name|Description|
+|記述子名|説明|
 | --- | --- |
-| Radical | SMILES for radical molecules. |
-| Monomer | SMILES for monomer molecules. |
+| Radical | ラジカル分子に対応する SMILES |
+| Monomer | モノマー分子の対応する SMILES |
 | ... | ... |
 
-List of collected molecules.
+収集対象分子は以下の通りです。
 | Monomer | CAS RN | Name | Abbreviation |
 | --- | --- | --- | --- |
 | ![MMA](./CopDDB/images/monomer_0.svg) | 80-62-6 | Methyl methacrylate | MMA |
@@ -68,22 +69,16 @@ List of collected molecules.
 | ![monomer 48](./CopDDB/images/monomer_48.svg) | 119692-59-0 |
 | ![monomer 49](./CopDDB/images/monomer_49.svg) | 48145-04-6 |
 
-## Installation
-### Dependencies
-CopDDB requirs
-- Python 3
-- NumPy
-- RDKit
+## 利用方法
+このリポジトリには、csv ファイルの読み込みと処理を行うための Python モジュールも含まれています。Python 環境にて、このモジュールを利用することで、データセットを簡単に操作し分析を行うことができます。
 
-This repository includes Python modules for loading and processing CSV files. By utilizing these modules in a Python environment, you can easily manipulate and analyze the dataset.
-
-### User installation
+### インストール方法
 ```sh
 git clone https://github.com/hatanaka-lab/CopDDB
 ```
 
-### Example 1: Obraining descriptors using SMILES strings.
-The most basic usage is to retrieve descriptors collected for propagation reactions using the dataset.`QCValuesFromSMILES()` function. The following example demonstrates how to obtain descriptors in the form of a `pandas.DataFrame` using the SMILES for radical `smi_rad` and the SMILES for monomer `smi_mon`.
+### 使用例 1. SMILES 文字列を使って記述子を取得する。
+最も基本的な使い方は伝搬反応に関して集められた記述子を `dataset.QCValuesFromSMILES()` 関数を使って取得する方法です。以下の例はラジカルの SMILES `smi_rad` とモノマーの SMILES `smi_mon` を使って記述子を `pandas.DataFrame` の形で取得します。
 
 ```python
 from CopDDB import datasets
@@ -93,7 +88,7 @@ smi_mon = "C=CC(=O)O"
 
 features = datasets.QCValuesFromSMILES(smi_rad, smi_mon)
 ```
-The output of features is as follows.
+features を出力すると以下のようになります。
 ```
 >>> print(features)
       DE_decomposition_tail  DE_decomposition_head  DE_precursor    DE_TS  ...  Real_theta  Volume_MonteCarlo_Mon  Volume_MonteCarlo_Rad  CCdist_TS
@@ -102,11 +97,11 @@ The output of features is as follows.
 [1 rows x 26 columns]
 ```
 
-If you input SMILES that are not listed in the CopDDB, an empty DataFrame will be returned. Let's try this with the ethene molecule `"C=C"`
+データセットに未記載の SMILES を入力すると空のデータフレームが返ってきます。エテン分子 `"C=C"` を使って試してみます。
 ```python
 features = datasets.QCValuesFromSMILES("C=C", smi_mon)
 ```
-The output of features is as follows.
+features を出力すると以下のようになります。
 ```python
 >>> print(features)
 Empty DataFrame
@@ -114,11 +109,11 @@ Columns: [DE_decomposition_tail, DE_decomposition_head, DE_precursor, DE_TS, DE_
 Index: []
 ```
 
-If you want to explicitly include missing values, use the `with_nan` option (which is `False` by default) as follows.
+欠損値を明示したい場合は `with_nan` (初期値は `False`) オプションを使って以下のようにします。
 ```python
 features = datasets.QCValuesFromSMILES("C=C", smi_mon, with_nan=True)
 ```
-The output of features is as follows.
+features を出力すると以下のようになります。
 ```python
 >>> print(features)
       DE_decomposition_tail  DE_decomposition_head  DE_precursor  DE_TS  ...  Real_theta  Volume_MonteCarlo_Mon  Volume_MonteCarlo_Rad  CCdist_TS
@@ -127,11 +122,11 @@ The output of features is as follows.
 [1 rows x 26 columns]
 ```
 
-To include the input SMILES in the returned value, use the `with_smiles` option (which is `False` by default).
+戻り値に入力した SMILES を含ませる場合には `with_smiles` (初期値は `False`) を使います。
 ```python
 features = datasets.QCValuesFromSMILES("C=C", smi_mon, with_nan=True, with_smiles=True)
 ```
-The output of features is as follows.
+features を出力すると以下のようになります。
 ```python
 >>> print(features)
      Radical    Monomer  DE_decomposition_tail  DE_decomposition_head  ...  Real_theta  Volume_MonteCarlo_Mon  Volume_MonteCarlo_Rad  CCdist_TS
@@ -140,7 +135,7 @@ The output of features is as follows.
 [1 rows x 28 columns]
 ```
 
-SMILES can also be input as a `list` type. By using a `list`, you can obtain multiple descriptors at the same time. For example, you can use it as follows.
+SMILES は `list` 型で入力することもできます。`list` を用いることで複数の記述子を同時に取得できます。例えば、以下のように使います。
 ```python
 smi_list = [
     ["C=C(C)C(=O)OC", "C=C(C)C(=O)OC"],
@@ -150,7 +145,7 @@ smi_list = [
 
 features = datasets.QCValuesFromSMILES(smi_list)
 ```
-The output of features is as follows.
+features を出力すると以下のようになります。
 ```python
 >>> print(features)
      DE_decomposition_tail  DE_decomposition_head  DE_precursor     DE_TS  ...  Real_theta  Volume_MonteCarlo_Mon  Volume_MonteCarlo_Rad  CCdist_TS
@@ -161,8 +156,8 @@ The output of features is as follows.
 [3 rows x 26 columns]
 ```
 
-### Example 2: Creating a Dataset from a List of SMILES and a List of Target Variables (Preprocessing)
-In this example, we use the `datasets.buildVariablesFromSMILESandY()` function to create a dataset from SMILES strings and target variables, including both descriptors and target variables. This function is useful for removing missing values in descriptors. The resulting dataset is returned as a Bunch object.
+### 使用例 2. SMILES のリストと目的変数のリストからデータセットを作る (前処理)
+この例では `datasets.buildVariablesFromSMILESandY()` 関数を使って SMILES 文字列と目的変数から、記述子と目的変数を含むデータセットを作ります。この関数は記述子に欠損値がある場合の欠損値の除去に便利です。作られるデータセットは `Bunch` オブジェクトで返されます。
 
 ```python 
 from CopDDB import datasets
@@ -171,14 +166,14 @@ smi_list = [
     ["C=C(C)C(=O)OC", "C=C(C)C(=O)OC"],
     ["C=C(C)C(=O)OC", "C=CC(=O)O"],
     ["CO/C=C\C(=O)OC", "C=Cc1ccccc1"],
-    ["C=C", "C=C"] # SMILES that result in missing values
+    ["C=C", "C=C"] # 欠損値になる SMILES ペア
 ]
 
-target = [1, 2, 3, 4] # Target variables
+target = [1, 2, 3, 4] # 目的変数
 
 ds = datasets.buildVariablesFromSMILESandY(smi_list, target)
 ```
-The `Bunch` object created contains descriptors `data` and target variables `target`. If you examine the contents of each, you will find the following.
+作られた `Bunch` オブジェクトは記述子 `data` と目的変数`target` を含みます。それぞれの中身を確認すると以下のようになります。
 ```python
 >>> ds.keys()
 dict_keys(['data', 'target'])
@@ -195,7 +190,7 @@ dict_keys(['data', 'target'])
 [1 2 3]
 ```
 
-Similar to Example 1, if you want to explicitly include missing values, you can use the `with_nan` option (which is `False` by default).
+使用例 1 と同様に欠損値を明示したい場合は `with_nan` (初期値は `False`) オプションを使うことができます。
 ```python
 >>> ds = datasets.buildVariablesFromSMILESandY(smi_list, target, with_nan=True)
 
@@ -212,10 +207,11 @@ Similar to Example 1, if you want to explicitly include missing values, you can 
 [1 2 3 4]
 ```
 
-### Example 3: Creating a Descriptor for Monomer Pairs (Preprocessing)
-In this example, we will explain the method of creating descriptors for a copolymer made of two different monomers, $M_1$ and $M_2$. This is done using the `datasets.buildPairVariablesFromSMILESandY()` function. This function combines descriptors related to the follow ing equations 1 and 2 to create a new set of descriptors.
+### 使用例 3. モノマーペアに関する記述子データセットの作成 (前処理)
+この例では、二つの異なるモノマー $M_1$ と $M_2$ からなるコポリマーの記述子を生成する方法について説明します。これを行うには、`datasets.buildPairVariablesFromSMILESandY()` 関数を使用します。この関数は以下の式 1 と式 2 に関わる記述子を一緒に並べて新しい記述子のセットを作成します。
 
-First, let's consider why it is necessary to create a new set of descriptors. The growth reaction of the copolymer formed by $M_1$ and $M_2$ involves the following four basic reactions.
+まず初めに、なぜ新たに記述子のセットを生成する必要があるのかを考えてみます。
+$M_1$, $M_2$ が作るコポリマーの成長反応には以下の 4 種の素反応が関わります。
 
 $$
 M_1^* + M_1 \xrightarrow{k_{11}} M_1^* ~~~~(1)
@@ -233,10 +229,12 @@ $$
 M_2^* + M_2 \xrightarrow{k_{22}} M_2^* ~~~~(4)
 $$
 
-Here, $M_1^*$ and $M_2^*$ represent the radicals of $M_1$ and $M_2$ respectively, and $k_{ij}$ denotes the reaction rate constants between $M_i^*$ and $M_j$. A single record in CopDDB [ref1] contains information about one of the reactions from equations 1 to 4. This means that to better explain the reactions between monomers $M_1$ and $M_2$, it is more effective to use multiple equations from the four basic reactions.
+ここで、$M^*_1$、$M^*_2$ は $M_1$, $M_2$ それぞれのラジカルを示し、
+$k_{ij}$ は $M^*_i$ と $M_j$ の反応速度定数を示しています。
+CopDDB [ref1] の一つのレコードは式 1 から式 4 のどれか一つの情報を含みます。つまり、モノマー $M_1$、$M_2$ の反応を説明するには上の式を複数用いた方が実際の反応をよりよく説明できるようになるのです。
 
-The `datasets.buildPairVariablesFromSMILESandY()` function in CopDDB appends the pair numbers of the molecules involved in the reaction to the end of the descriptors, creating new descriptors. For example, for equations 1 and 2, the descriptor `DE_TS` becomes `DE_TS_11` and `DE_TS_12` respectively. For descriptors derived from a single molecule like the radical $M_1^*$ or the monomer $M_i$, only single number is appended. For instance, a molecular orbital energy descriptor like `E_Rad_SOMO` becomes `E_Rad_SOMO_1`.
+`datasets.buildPairVariablesFromSMILESandY()` 関数では CopDDB 内の記述子の末尾に、反応に関わる分子の番号を付加して新しい記述子にします。例えば、式 1, 2 について、記述子 **DE_TS** はそれぞれ **DE_TS_11**、**DE_TS_12** となります。ラジカル $M_i^*$ やモノマー $M_i$ のように単一の分子由来の記述子には分子の番号を一つだけ付けます。例えば、**E_Rad_SOMO** のように分子軌道エネルギーの記述子は **E_Rad_SOMO_1** となります。
 
-Based on this idea, [ref1] rearranged the descriptors in CopDDB to create a set of descriptors and used them to build a predictive model for the copolymerization monomer reactivity ratio $r_1$.
+このアイディアをもとにして、[ref1] では CopDDB の記述子を並べ直して記述子のセットを作り、それを用いて共重合で重要な意味を持つモノマー反応性比 $r_1$ の予想モデルを作成しました。
 
 [ref1]: https://www.rsc.org/journals-books-databases/about-journals/digital-discovery/
