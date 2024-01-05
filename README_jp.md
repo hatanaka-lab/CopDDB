@@ -6,7 +6,7 @@
 このリポジトリは、量子化学計算によって得られたポリマーの伝搬反応に関するさまざまな記述子を集めたデータセットを配布するために作成されました。ポリマーに関する化学・情報科学コミュニティに役立つことを目指しています。
 
 ## データベースの内容
-データセットは csv 形式で提供されており、化学反応に関する多様な記述子を含んでいます。([csv](./CopDDB/datasets/data/PropagationQuantumChem_2023-12-13.csv))
+データセットは csv 形式で提供されており、化学反応に関する多様な記述子を含んでいます。([csv](./copddb/datasets/data/PropagationQuantumChem_2023-12-13.csv))
 データセットに含まれる記述子は以下の通りです。
 
 |記述子名|説明|
@@ -18,56 +18,56 @@
 収集対象分子は以下の通りです。
 | Monomer | CAS RN | Name | Abbreviation |
 | --- | --- | --- | --- |
-| ![MMA](./CopDDB/images/monomer_0.svg) | 80-62-6 | Methyl methacrylate | MMA |
-| ![GMA](./CopDDB/images/monomer_1.svg) | 106-91-2 | Glycidyl methacrylate | GMA |
-| ![St](./CopDDB/images/monomer_2.svg) | 100-42-5 | Styrene | St |
-| ![St](./CopDDB/images/monomer_3.svg) | 5739-81-1 | Methyl (*Z*)-3-methoxyacrylate |
-| ![monomer 4](./CopDDB/images/monomer_4.svg)  | 79-41-4 | Methacrylic acid |
-| ![monomer 5](./CopDDB/images/monomer_5.svg) | 97-63-2 | Ethyl methacrylate |
-| ![monomer 6](./CopDDB/images/monomer_6.svg) | 97-88-1 | Butyl methacrylate |
-| ![monomer 7](./CopDDB/images/monomer_7.svg) | 97-86-9 | Isobutyl methacrylate |
-| ![monomer 8](./CopDDB/images/monomer_8.svg) | 585-07-9 | *tert*-Butyl methacrylate
-| ![monomer 9](./CopDDB/images/monomer_9.svg) | 37674-57-0 | (3-Ethyloxetan-3-yl)methyl methacrylate | 
-| ![monomer 10](./CopDDB/images/monomer_10.svg) | 688-84-6 | 2-Ethylhexyl methacrylate |
-| ![monomer 11](./CopDDB/images/monomer_11.svg) | 142-90-5 | Dodecyl methacrylate |
-| ![monomer 12](./CopDDB/images/monomer_12.svg) | 32360-05-7 | Stearyl methacrylate |
-| ![monomer 13](./CopDDB/images/monomer_13.svg) | 101-43-9 | Cyclohexyl methacrylate |
-| ![monomer 14](./CopDDB/images/monomer_14.svg) | 2495-37-6 | Benzyl methacrylate |
-| ![monomer 15](./CopDDB/images/monomer_15.svg) | 868-77-9 | 2-Hydroxyethyl methacrylate |
-| ![monomer 16](./CopDDB/images/monomer_16.svg) | 923-26-2 | 2-Hydroxypropyl methacrylate |
-| ![monomer 17](./CopDDB/images/monomer_17.svg) | 115372-36-6 | 3-Hydroxy-1-methacryloyloxyadamantane |
-| ![monomer 18](./CopDDB/images/monomer_18.svg) | 115522-15-1 | 3,5-Dihydroxy-1-adamantyl methacrylate |
-| ![monomer 19](./CopDDB/images/monomer_19.svg) | 2867-47-2 |
-| ![monomer 20](./CopDDB/images/monomer_20.svg) | 105-16-8 |
-| ![monomer 21](./CopDDB/images/monomer_21.svg) | 34759-34-7 |
-| ![monomer 22](./CopDDB/images/monomer_22.svg) | 68586-19-6 |
-| ![monomer 23](./CopDDB/images/monomer_23.svg) | 2455-24-5 |
-| ![monomer 24](./CopDDB/images/monomer_24.svg) | 41988-14-1 |
-| ![monomer 25](./CopDDB/images/monomer_25.svg) | 2628-16-2 |
-| ![monomer 26](./CopDDB/images/monomer_26.svg) | 79-06-1 |
-| ![monomer 27](./CopDDB/images/monomer_27.svg) | 15214-89-8 |
-| ![monomer 28](./CopDDB/images/monomer_28.svg) | 79-10-7 |
-| ![monomer 29](./CopDDB/images/monomer_29.svg) | 96-33-3 |
-| ![monomer 30](./CopDDB/images/monomer_30.svg) | 93841-48-6 |
-| ![monomer 31](./CopDDB/images/monomer_31.svg) | 51952-49-9 |
-| ![monomer 32](./CopDDB/images/monomer_32.svg) | 5888-33-5 |
-| ![monomer 33](./CopDDB/images/monomer_33.svg) | 106-63-8 |
-| ![monomer 34](./CopDDB/images/monomer_34.svg) | 2499-59-4 |
-| ![monomer 35](./CopDDB/images/monomer_35.svg) | 216581-76-9 |
-| ![monomer 36](./CopDDB/images/monomer_36.svg) | 2478-10-6 |
-| ![monomer 37](./CopDDB/images/monomer_37.svg) | 86273-46-3 |
-| ![monomer 38](./CopDDB/images/monomer_38.svg) | 1663-39-4 |
-| ![monomer 39](./CopDDB/images/monomer_39.svg) | 65983-31-5 |
-| ![monomer 40](./CopDDB/images/monomer_40.svg) | 3121-61-7 |
-| ![monomer 41](./CopDDB/images/monomer_41.svg) | 2156-97-0 |
-| ![monomer 42](./CopDDB/images/monomer_42.svg) | 32002-24-7 |
-| ![monomer 43](./CopDDB/images/monomer_43.svg) | 23117-36-4 |
-| ![monomer 44](./CopDDB/images/monomer_44.svg) | 4813-57-4 |
-| ![monomer 45](./CopDDB/images/monomer_45.svg) | 2399-48-6 |
-| ![monomer 46](./CopDDB/images/monomer_46.svg) | 818-61-1 |
-| ![monomer 47](./CopDDB/images/monomer_47.svg) | 999-61-1 |
-| ![monomer 48](./CopDDB/images/monomer_48.svg) | 119692-59-0 |
-| ![monomer 49](./CopDDB/images/monomer_49.svg) | 48145-04-6 |
+| ![MMA](./copddb/images/monomer_0.svg) | 80-62-6 | Methyl methacrylate | MMA |
+| ![GMA](./copddb/images/monomer_1.svg) | 106-91-2 | Glycidyl methacrylate | GMA |
+| ![St](./copddb/images/monomer_2.svg) | 100-42-5 | Styrene | St |
+| ![St](./copddb/images/monomer_3.svg) | 5739-81-1 | Methyl (*Z*)-3-methoxyacrylate |
+| ![monomer 4](./copddb/images/monomer_4.svg)  | 79-41-4 | Methacrylic acid |
+| ![monomer 5](./copddb/images/monomer_5.svg) | 97-63-2 | Ethyl methacrylate |
+| ![monomer 6](./copddb/images/monomer_6.svg) | 97-88-1 | Butyl methacrylate |
+| ![monomer 7](./copddb/images/monomer_7.svg) | 97-86-9 | Isobutyl methacrylate |
+| ![monomer 8](./copddb/images/monomer_8.svg) | 585-07-9 | *tert*-Butyl methacrylate
+| ![monomer 9](./copddb/images/monomer_9.svg) | 37674-57-0 | (3-Ethyloxetan-3-yl)methyl methacrylate | 
+| ![monomer 10](./copddb/images/monomer_10.svg) | 688-84-6 | 2-Ethylhexyl methacrylate |
+| ![monomer 11](./copddb/images/monomer_11.svg) | 142-90-5 | Dodecyl methacrylate |
+| ![monomer 12](./copddb/images/monomer_12.svg) | 32360-05-7 | Stearyl methacrylate |
+| ![monomer 13](./copddb/images/monomer_13.svg) | 101-43-9 | Cyclohexyl methacrylate |
+| ![monomer 14](./copddb/images/monomer_14.svg) | 2495-37-6 | Benzyl methacrylate |
+| ![monomer 15](./copddb/images/monomer_15.svg) | 868-77-9 | 2-Hydroxyethyl methacrylate |
+| ![monomer 16](./copddb/images/monomer_16.svg) | 923-26-2 | 2-Hydroxypropyl methacrylate |
+| ![monomer 17](./copddb/images/monomer_17.svg) | 115372-36-6 | 3-Hydroxy-1-methacryloyloxyadamantane |
+| ![monomer 18](./copddb/images/monomer_18.svg) | 115522-15-1 | 3,5-Dihydroxy-1-adamantyl methacrylate |
+| ![monomer 19](./copddb/images/monomer_19.svg) | 2867-47-2 |
+| ![monomer 20](./copddb/images/monomer_20.svg) | 105-16-8 |
+| ![monomer 21](./copddb/images/monomer_21.svg) | 34759-34-7 |
+| ![monomer 22](./copddb/images/monomer_22.svg) | 68586-19-6 |
+| ![monomer 23](./copddb/images/monomer_23.svg) | 2455-24-5 |
+| ![monomer 24](./copddb/images/monomer_24.svg) | 41988-14-1 |
+| ![monomer 25](./copddb/images/monomer_25.svg) | 2628-16-2 |
+| ![monomer 26](./copddb/images/monomer_26.svg) | 79-06-1 |
+| ![monomer 27](./copddb/images/monomer_27.svg) | 15214-89-8 |
+| ![monomer 28](./copddb/images/monomer_28.svg) | 79-10-7 |
+| ![monomer 29](./copddb/images/monomer_29.svg) | 96-33-3 |
+| ![monomer 30](./copddb/images/monomer_30.svg) | 93841-48-6 |
+| ![monomer 31](./copddb/images/monomer_31.svg) | 51952-49-9 |
+| ![monomer 32](./copddb/images/monomer_32.svg) | 5888-33-5 |
+| ![monomer 33](./copddb/images/monomer_33.svg) | 106-63-8 |
+| ![monomer 34](./copddb/images/monomer_34.svg) | 2499-59-4 |
+| ![monomer 35](./copddb/images/monomer_35.svg) | 216581-76-9 |
+| ![monomer 36](./copddb/images/monomer_36.svg) | 2478-10-6 |
+| ![monomer 37](./copddb/images/monomer_37.svg) | 86273-46-3 |
+| ![monomer 38](./copddb/images/monomer_38.svg) | 1663-39-4 |
+| ![monomer 39](./copddb/images/monomer_39.svg) | 65983-31-5 |
+| ![monomer 40](./copddb/images/monomer_40.svg) | 3121-61-7 |
+| ![monomer 41](./copddb/images/monomer_41.svg) | 2156-97-0 |
+| ![monomer 42](./copddb/images/monomer_42.svg) | 32002-24-7 |
+| ![monomer 43](./copddb/images/monomer_43.svg) | 23117-36-4 |
+| ![monomer 44](./copddb/images/monomer_44.svg) | 4813-57-4 |
+| ![monomer 45](./copddb/images/monomer_45.svg) | 2399-48-6 |
+| ![monomer 46](./copddb/images/monomer_46.svg) | 818-61-1 |
+| ![monomer 47](./copddb/images/monomer_47.svg) | 999-61-1 |
+| ![monomer 48](./copddb/images/monomer_48.svg) | 119692-59-0 |
+| ![monomer 49](./copddb/images/monomer_49.svg) | 48145-04-6 |
 
 ## 利用方法
 このリポジトリには、csv ファイルの読み込みと処理を行うための Python モジュールも含まれています。Python 環境にて、このモジュールを利用することで、データセットを簡単に操作し分析を行うことができます。
