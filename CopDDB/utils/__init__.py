@@ -24,9 +24,9 @@ def canonical_smiles(smiles):
     try:
         mol = _Chem.MolFromSmiles(str(smiles))
         can = _Chem.MolToSmiles(mol)
-        return can
     except:
-        return ""
+        can = ""
+    return can
 
 
 def _read_text_to_list(file):
