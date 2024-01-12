@@ -12,7 +12,26 @@ The dataset is provided in [csv](./copddb/datasets/data/PropagationQuantumChem_2
 | --- | --- |
 | Radical | SMILES for radical molecules. |
 | Monomer | SMILES for monomer molecules. |
-| ... | ... |
+| DE_decomposition_tail | Energy required to remove a methyl group from the tail position of the monomer |
+| DE_decomposition_head | Energy required to remove a methyl group from the head position of the monomer |
+| DE_precursor | Relative total electron energy of precursor |
+| DE_TS | Relative total electron energy of TS. |
+| DE_product | Relative total electron energy of the product |
+| DE_barrier | Energy difference between precursor and TS |
+| DE_reaction | Reactive energy |
+| E_Rad_SOMO | SOMO energy of radicals |
+| E_Rad_LUMO | LUMO energy of radicals |
+| E_Mon_HOMO | HOMO energy of monomer |
+| E_Mon_LUMO | LUMO energy of monomer |
+| DE_SHgap | Energy difference between SOMO of radical and HOMO of monomer |
+| DE_SLgap | Energy difference between SOMO of radical and LUMO of monomer |
+| VBur_R228_Mon | $\%V_{Bur}$ within 2.28 Å of the monomer reaction point |
+| VBur_R350_Mon | $\%V_{Bur}$ within 3.50 Å of the monomer reaction point |
+| VBur_R228_Rad | $\%V_{Bur}$ within 2.28 Å of the radical reaction point |
+| VBur_R350_Rad | $\%V_{Bur}$ within 3.50 Å of the radical reaction point |
+| Volume_MonteCarlo_Mon | Volume of monomer |
+| Volume_MonteCarlo_Rad | Volume of radical |
+| CCdist_TS | C-C distance in TS structure |
 
 List of collected molecules.
 | Monomer | CAS RN | Name | Abbreviation |

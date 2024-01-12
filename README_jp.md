@@ -13,7 +13,27 @@
 | --- | --- |
 | Radical | ラジカル分子に対応する SMILES |
 | Monomer | モノマー分子の対応する SMILES |
-| ... | ... |
+| DE_decomposition_tail | モノマーの tail 位からメチル基を取り除くのに必要なエネルギー |
+| DE_decomposition_head | モノマーの head 位からメチル基を取り除くのに必要なエネルギー |
+| DE_precursor | TS から IRC を前駆体方向に降りた点の相対的な全電
+子エネルギー |
+| DE_TS | TS の相対全電子エネルギー |
+| DE_product | 生成物の相対的な全電子エネルギー |
+| DE_barrier | 前駆体と TS のエネルギー差 |
+| DE_reaction | 反応エネルギー |
+| E_Rad_SOMO | ラジカルの SOMO のエネルギー |
+| E_Rad_LUMO | ラジカルの LUMO のエネルギー |
+| E_Mon_HOMO | モノマーの HOMO のエネルギー |
+| E_Mon_LUMO | モノマーの LUMO のエネルギー |
+| DE_SHgap | ラジカルの SOMO とモノマーの HOMO のエネルギー差 |
+| DE_SLgap | ラジカルの SOMO とモノマーの LUMO のエネルギー差 |
+| VBur_R228_Mon | モノマーの反応点 から 2.28 Å 以内の $\%V_{Bur}$ |
+| VBur_R350_Mon | モノマーの反応点 から 3.50 Å 以内の $\%V_{Bur}$ |
+| VBur_R228_Rad | ラジカルの反応点 から 2.28 Å 以内の $\%V_{Bur}$ |
+| VBur_R350_Rad | ラジカルの反応点 から 3.50 Å 以内の $\%V_{Bur}$ |
+| Volume_MonteCarlo_Mon | モノマーの体積 |
+| Volume_MonteCarlo_Rad | ラジカルの体積 |
+| CCdist_TS | TS 構造内の C–C 距離 |
 
 収集対象分子は以下の通りです。
 | Monomer | CAS RN | Name | Abbreviation |
