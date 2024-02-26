@@ -62,7 +62,8 @@ def get_available_descriptors(csv_file=""):
 
     if type(_descriptors) == str:
         _load_descriptors(csv_file)
-    return list(_descriptors["data"].keys())
+    ex = ["Radical", "Monomer"]
+    return [key for key in _descriptors["data"].keys() if key not in ex]
 
 
 def get_available_smiles(csv_file=""):
