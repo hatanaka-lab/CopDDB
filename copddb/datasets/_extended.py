@@ -4,8 +4,8 @@ import pandas as pd
 
 
 from ._base import (
-        getAvailableFeatures,
-        QCValuesFromSMILES,
+        get_available_descriptors,
+        descriptors_from_smiles,
     )
 from ..utils import (
         Bunch,
@@ -14,9 +14,9 @@ from ..utils import (
     )
 
 
-def buildPairVariablesFromSMILESandY(smiles=[], y=[],
-                                     with_nan=False,
-                                     with_smiles=False):
+def build_pair_variables_from_smiles_and_y(smiles=[], y=[],
+                                           with_nan=False,
+                                           with_smiles=False):
     """
 
     Expranation
@@ -34,20 +34,23 @@ def buildPairVariablesFromSMILESandY(smiles=[], y=[],
         print(f"len(smiles): {len(smiles)}\nlen(y)     : {len(y)}")
         return None
 
-    features = getAvailableFeatures()
-    # Get feature names derived from molecule (M* or M).
+    descriptors = get_available_descriptors()
+    # Get descriptor names derived from molecule (M* or M).
     f = os.path.dirname(__file__)+"/data/moleculeProperties.txt"
-    mol_features = _read_text_to_list(f)
-    # Set feature names derived from reaction (M* + M).
-    rea_features = [key for key in features if not key in mol_features
-                    if not key in ["Radical", "Monomer"]]
+    mol_descriptors = [key for key in _read_text_to_list(f)
+                       if key in descriptors]
+    # Set descriptor names derived from reaction (M* and M).
+    rea_descriptors = [key for key in descriptors if not key in mol_descriptors
+                       if not key in ["Radical", "Monomer"]]
 
-    # Set new feature names
+    # Set new descriptor names
     preserve = {"Monomer 1": [], "Monomer 2": []}
     rea_suffixes = ["_11", "_12"]
-    preserve.update({k+suf: [] for k in rea_features for suf in rea_suffixes})
+    preserve.update({k+suf: [] for k in rea_descriptors
+                     for suf in rea_suffixes})
     mol_suffixes = ["_1", "_2"]
-    preserve.update({k+suf: [] for k in mol_features for suf in mol_suffixes})
+    preserve.update({k+suf: [] for k in mol_descriptors
+                     for suf in mol_suffixes})
 
     # Reaction_11 : M1* + M1 -> M1*
     # Reaction_12 : M1* + M2 -> M2*
@@ -55,20 +58,20 @@ def buildPairVariablesFromSMILESandY(smiles=[], y=[],
     # Set data
     cansmi_dict = {}
     for smi1, smi2 in smiles:
-        data_11 = QCValuesFromSMILES(smi1, smi1, with_nan=True)
-        data_12 = QCValuesFromSMILES(smi1, smi2, with_nan=True)
-        data_22 = QCValuesFromSMILES(smi2, smi2, with_nan=True)
-        # Add new features (molecule)
+        data_11 = descriptors_from_smiles(smi1, smi1, with_nan=True)
+        data_12 = descriptors_from_smiles(smi1, smi2, with_nan=True)
+        data_22 = descriptors_from_smiles(smi2, smi2, with_nan=True)
+        # Add new descriptors (molecule)
         for data, suf in zip([data_11, data_22], mol_suffixes):
-            for fea in mol_features:
-                key = fea + suf
-                val = data[fea].values[0]
+            for des in mol_descriptors:
+                key = des + suf
+                val = data[des].values[0]
                 preserve[key].append(val)
-        # Add new features (reaction)
+        # Add new descriptors (reaction)
         for data, suf in zip([data_11, data_12], rea_suffixes):
-            for fea in rea_features:
-                key = fea + suf
-                val = data[fea].values[0]
+            for des in rea_descriptors:
+                key = des + suf
+                val = data[des].values[0]
                 preserve[key].append(val)
         # Add SMILES
         for smi, key in zip([smi1, smi2], ["Monomer 1", "Monomer 2"]):

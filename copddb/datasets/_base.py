@@ -11,12 +11,12 @@ from ..utils import Bunch, canonical_smiles
 
 # A DataFrame object that hold data obtained from
 # quantum chemical calculations.
-_QCValues = ""
+_descriptors = ""
 
 
-def buildVariablesFromSMILESandY(smiles=[], y=[],
-                                 with_nan=False,
-                                 with_smiles=False):
+def build_dataset_from_smiles_and_y(smiles=[], y=[],
+                                    with_nan=False,
+                                    with_smiles=False):
     """
 
     Expranation
@@ -33,7 +33,8 @@ def buildVariablesFromSMILESandY(smiles=[], y=[],
         print(f"len(smiles): {len(smiles)}\nlen(y)     : {len(y)}")
         return None
 
-    data = QCValuesFromSMILES(smiles, with_nan=True, with_smiles=with_smiles)
+    data = descriptors_from_smiles(smiles, with_nan=True,
+                                   with_smiles=with_smiles)
     label = data.isnull().any(axis=1)
 
     if with_nan:
@@ -48,7 +49,7 @@ def buildVariablesFromSMILESandY(smiles=[], y=[],
                )
 
 
-def getAvailableFeatures(csv_file=""):
+def get_available_descriptors(csv_file=""):
     """ Return keys in the feature dataset.
 
     Expranation
@@ -57,14 +58,15 @@ def getAvailableFeatures(csv_file=""):
         list
     """
 
-    global _QCValues
+    global _descriptors
 
-    if type(_QCValues) == str:
-        _load_QCValues(csv_file)
-    return list(_QCValues["data"].keys())
+    if type(_descriptors) == str:
+        _load_descriptors(csv_file)
+    ex = ["Radical", "Monomer"]
+    return [key for key in _descriptors["data"].keys() if key not in ex]
 
 
-def getAvailableSMILES(csv_file=""):
+def get_available_smiles(csv_file=""):
     """ Returns a list of SMILES registered in the feature dataset.
 
     Expranation
@@ -73,16 +75,17 @@ def getAvailableSMILES(csv_file=""):
         list
     """
 
-    global _QCValues
+    global _descriptors
 
-    if type(_QCValues) == str:
-        _load_QCValues(csv_file)
-    data = _QCValues["data"]
+    if type(_descriptors) == str:
+        _load_descriptors(csv_file)
+    data = _descriptors["data"]
+    N = _descriptors["INITIAL_DATA_COUNT"]
 
-    return list(set(data["Radical"]) | set(data["Monomer"]))
+    return list(set(data["Radical"][:N]) | set(data["Monomer"][:N]))
 
 
-def _load_QCValues(csv_file=""):
+def _load_descriptors(csv_file=""):
     """ Functions for reading data on propagation reactions.
 
     Explanation
@@ -94,7 +97,7 @@ def _load_QCValues(csv_file=""):
         None
     """
 
-    global _QCValues
+    global _descriptors
 
     if not csv_file:
         files = glob(os.path.dirname(__file__)+"/data/PropagationQuantumC*csv")
@@ -123,11 +126,11 @@ def _load_QCValues(csv_file=""):
                 # Canonical SMILES をリストに記録する
                 cansmi_list.append(cansmi)
  
-        _QCValues = Bunch(
-                        data=data,
-                        initDataCount=data.index,
-                        csv_file=csv_file
-                         )
+        _descriptors = Bunch(
+                       data=data,
+                       INITIAL_DATA_COUNT=data.index.stop,
+                       csv_file=csv_file
+                       )
     else:
         print(f"{csv_file} does not exist in {os.path.dirname(__file__)}.")
         files = glob(os.path.dirname(__file__)+"/data/PropagationQuantumC*csv")
@@ -136,7 +139,11 @@ def _load_QCValues(csv_file=""):
             print(os.path.basename(file))
 
 
-def QCValuesFromSMILES(*smi, csv_file="", with_nan=False, with_smiles=False):
+# def QCValuesFromSMILES(*smi, csv_file="", with_nan=False, with_smiles=False):
+def descriptors_from_smiles(*smi,
+                            csv_file="",
+                            with_nan=False,
+                            with_smiles=False):
     """ Return a pandas DataFrame containing the data corresponding to the
         input SMILES.
 
@@ -151,11 +158,11 @@ def QCValuesFromSMILES(*smi, csv_file="", with_nan=False, with_smiles=False):
 
     """
 
-    global _QCValues
+    global _descriptors
 
-    if type(_QCValues) == str:
-        _load_QCValues(csv_file)
-    data = _QCValues["data"]
+    if type(_descriptors) == str:
+        _load_descriptors(csv_file)
+    data = _descriptors["data"]
 
     smi_arr = np.array(smi)
     if (len(smi_arr.shape) == 1 and smi_arr.shape[0] < 2) or \
@@ -163,7 +170,7 @@ def QCValuesFromSMILES(*smi, csv_file="", with_nan=False, with_smiles=False):
         print(textwrap.dedent("""
           Two or more SMILES are required. Try the following
 
-             >>> dataset.QCValuesFromSMILES("SMILES1", "SMILES2")
+             >>> dataset.descriptors_from_smiles("SMILES1", "SMILES2")
 
         """))
 
@@ -178,9 +185,9 @@ def QCValuesFromSMILES(*smi, csv_file="", with_nan=False, with_smiles=False):
             new_data = pd.DataFrame({"Radical": [cansmi_rad],
                                      "Monomer": [cansmi_mon]},
                                      index=[label.size])
-            _QCValues["data"] = pd.concat([data, new_data], sort=False)
+            _descriptors["data"] = pd.concat([data, new_data], sort=False)
             if with_nan:
-                preserve = _QCValues["data"].tail(1)
+                preserve = _descriptors["data"].tail(1)
             else:
                 preserve = data[label]
         # NaN を含んでも良い場合
@@ -196,16 +203,16 @@ def QCValuesFromSMILES(*smi, csv_file="", with_nan=False, with_smiles=False):
                 preserve = pd.DataFrame(columns=data.columns)
 
     elif len(smi_arr.shape) == 2:
-        preserve = QCValuesFromSMILES(smi_arr[0, 0], smi_arr[0, 1],
-                                      with_nan=with_nan,
-                                      with_smiles=True)
+        preserve = descriptors_from_smiles(smi_arr[0, 0], smi_arr[0, 1],
+                                           with_nan=with_nan,
+                                           with_smiles=True)
 
     elif len(smi_arr.shape) == 3:
         preserve = pd.DataFrame(columns=data.columns)
         for rad, mon in smi_arr[0]:
-            new_data = QCValuesFromSMILES(rad, mon,
-                                          with_nan=with_nan,
-                                          with_smiles=True)
+            new_data = descriptors_from_smiles(rad, mon,
+                                               with_nan=with_nan,
+                                               with_smiles=True)
             preserve = pd.concat([preserve, new_data])
     else: # No case should come here.
         preserve = pd.DataFrame(columns=data.columns)
