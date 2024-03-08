@@ -10,30 +10,33 @@ The dataset is provided in [csv](./copddb/datasets/data/PropagationQuantumChem_2
 
 |Descriptor name|Description|
 | --- | --- |
-| Radical | SMILES for radical molecules. |
-| Monomer | SMILES for monomer molecules. |
-| DE_decomposition_tail | Energy required to remove a methyl group from the tail position of the monomer |
-| DE_decomposition_head | Energy required to remove a methyl group from the head position of the monomer |
-| DE_precursor | Relative total electron energy of precursor |
-| DE_TS | Relative total electron energy of TS. |
-| DE_product | Relative total electron energy of the product |
-| DE_barrier | Energy difference between precursor and TS |
-| DE_reaction | Reactive energy |
-| E_Rad_SOMO | SOMO energy of radicals |
-| E_Rad_LUMO | LUMO energy of radicals |
-| E_Mon_HOMO | HOMO energy of monomer |
-| E_Mon_LUMO | LUMO energy of monomer |
-| DE_SHgap | Energy difference between SOMO of radical and HOMO of monomer |
-| DE_SLgap | Energy difference between SOMO of radical and LUMO of monomer |
-| VBur_R228_Mon | $\%V_{Bur}$ within 2.28 Å of the monomer reaction point |
-| VBur_R350_Mon | $\%V_{Bur}$ within 3.50 Å of the monomer reaction point |
-| VBur_R228_Rad | $\%V_{Bur}$ within 2.28 Å of the radical reaction point |
-| VBur_R350_Rad | $\%V_{Bur}$ within 3.50 Å of the radical reaction point |
-| Volume_MonteCarlo_Mon | Volume of monomer |
-| Volume_MonteCarlo_Rad | Volume of radical |
-| CCdist_TS | C-C distance in TS structure |
+| Radical | SMILES for a radical (M<sub>1</sub>*) |
+| Monomer | SMILES for a monomer (M<sub>2</sub>) |
+| DE_tail | Reaction energy for the addition of a model initiator radical (Me*) to M<sub>1</sub> at the tail position |
+| DE_head | Reaction energy for the addition of a model initiator radical (Me*) to M<sub>1</sub> at the head position, which affords M<sub>1</sub>* |
+| DE_precursor | Relative energy of the precurser from the dissociation limit (M<sub>1</sub>* and M<sub>2</sub>) |
+| DE_TS | Relative energy of the TS of C-C bond formation from the dissociation limit (M<sub>1</sub>* and M<sub>2</sub>) |
+| DE_product | Relative energy of the product from the dissociation limit (M<sub>1</sub>* and M<sub>2</sub>) |
+| DE_barrier |  Activation barrier for the C-C bond formation (<I>i.e.</I>, the energy difference between the precursor and the TS) |
+| DE_reaction | Reaction energy for the C-C bond formation (<I>i.e.</I>, the energy difference between the precursor and the product) |
+| E_Rad_SOMO | SOMO energy of M<sub>1</sub>* |
+| E_Rad_LUMO | LUMO energy of M<sub>1</sub>* |
+| E_Mon_HOMO | HOMO energy of M<sub>2</sub> |
+| E_Mon_LUMO | LUMO energy of M<sub>2</sub> |
+| DE_SHgap | Energy difference between SOMO of M<sub>1</sub>* and HOMO of M<sub>2</sub> |
+| DE_SLgap | Energy difference between SOMO of M<sub>1</sub>* and LUMO of M<sub>2</sub> |
+| VBur_R228_Rad | %<I>V</I><sub>Bur</sub> within 2.28 Å of the reactive carbon atom of M<sub>1</sub>* |
+| VBur_R350_Rad | %<I>V</I><sub>Bur</sub> within 3.50 Å of the reactive carbon atom of M<sub>1</sub>* |
+| VBur_R228_Mon | %<I>V</I><sub>Bur</sub> within 2.28 Å of the reactive carbon atom of M<sub>2</sub> |
+| VBur_R350_Mon | %<I>V</I><sub>Bur</sub> within 3.50 Å of the reactive carbon atom of M<sub>2</sub> |
+| Volume_Rad | Volume of M<sub>1</sub>* |
+| Volume_Mon | Volume of M<sub>2</sub> |
+| CCdist_TS | Reactive C-C bond distance at the TS structure |
+| Sum_MW | Sum of molecular weight of M<sub>1</sub>* and M<sub>2</sub> |
+| logP_Rad | Partition coefficient log<I>P</I> of M<sub>1</sub>* |
+| logP_Mon | Partition coefficient log<I>P</I> of M<sub>2</sub> |
 
-List of collected molecules.
+List of monomers.
 | Monomer | CAS RN | Name | Abbreviation |
 | --- | --- | --- | --- |
 | ![MMA](./copddb/images/monomer_0.svg) | 80-62-6 | Methyl methacrylate | MMA |
@@ -55,37 +58,37 @@ List of collected molecules.
 | ![monomer 16](./copddb/images/monomer_16.svg) | 923-26-2 | 2-Hydroxypropyl methacrylate |
 | ![monomer 17](./copddb/images/monomer_17.svg) | 115372-36-6 | 3-Hydroxy-1-methacryloyloxyadamantane |
 | ![monomer 18](./copddb/images/monomer_18.svg) | 115522-15-1 | 3,5-Dihydroxy-1-adamantyl methacrylate |
-| ![monomer 19](./copddb/images/monomer_19.svg) | 2867-47-2 | (2-Dimethylaminoethyl) methacrylate ! |
-| ![monomer 20](./copddb/images/monomer_20.svg) | 105-16-8 | (2-Diethylamino)ethyl methacrylate ! |
-| ![monomer 21](./copddb/images/monomer_21.svg) | 34759-34-7 | Dicyclopentanyl methacrylate ! |
-| ![monomer 22](./copddb/images/monomer_22.svg) | 68586-19-6 | Ethylene glycol dicyclopentenyl ether methacrylate ! |
-| ![monomer 23](./copddb/images/monomer_23.svg) | 2455-24-5 | Tetrahydrofurfuryl methacrylate ! |
-| ![monomer 24](./copddb/images/monomer_24.svg) | 41988-14-1 | (3-Ethyloxetan-3-yl)methyl acrylate ! |
-| ![monomer 25](./copddb/images/monomer_25.svg) | 2628-16-2 | 4-Vinylphenyl acetate ! |
-| ![monomer 26](./copddb/images/monomer_26.svg) | 79-06-1 | Acrylamide ! |
-| ![monomer 27](./copddb/images/monomer_27.svg) | 15214-89-8 | 2-Acrylamido-2-methylpropanesulfonic acid ! |
-| ![monomer 28](./copddb/images/monomer_28.svg) | 79-10-7 | Acrylic acid ! |
-| ![monomer 29](./copddb/images/monomer_29.svg) | 96-33-3 | Methyl acrylate ! |
-| ![monomer 30](./copddb/images/monomer_30.svg) | 93841-48-6 | Isooctadecyl acrylate ! |
-| ![monomer 31](./copddb/images/monomer_31.svg) | 51952-49-9 | Isononyl acrylate ! |
-| ![monomer 32](./copddb/images/monomer_32.svg) | 5888-33-5 | Isobornyl acrylate ! |
-| ![monomer 33](./copddb/images/monomer_33.svg) | 106-63-8 | Isobutyl acrylate ! |
-| ![monomer 34](./copddb/images/monomer_34.svg) | 2499-59-4 | *n*-Octyl acrylate ! |
-| ![monomer 35](./copddb/images/monomer_35.svg) | 216581-76-9 | 3-Hydroxy-1-adamantyl acrylate ! |
-| ![monomer 36](./copddb/images/monomer_36.svg) | 2478-10-6 | 4-Hydroxybutyl acrylate ! |
-| ![monomer 37](./copddb/images/monomer_37.svg) | 86273-46-3 | 2-(2-Vinyloxyethoxy)ethyl acrylate ! |
-| ![monomer 38](./copddb/images/monomer_38.svg) | 1663-39-4 | *tert*-Butyl acrylate ! |
-| ![monomer 39](./copddb/images/monomer_39.svg) | 65983-31-5 | Dicyclopentenyloxyethyl acrylate ! |
-| ![monomer 40](./copddb/images/monomer_40.svg) | 3121-61-7 | 2-Methoxyethyl acrylate ! |
-| ![monomer 41](./copddb/images/monomer_41.svg) | 2156-97-0 | Dodecyl acrylate ! |
-| ![monomer 42](./copddb/images/monomer_42.svg) | 32002-24-7 | Ethyl 3,3-diethoxyacrylate ! |
-| ![monomer 43](./copddb/images/monomer_43.svg) | 23117-36-4 | 1,4-Cyclohexanedimethanol monoacrylate ! |
-| ![monomer 44](./copddb/images/monomer_44.svg) | 4813-57-4 | Stearyl acrylate ! |
-| ![monomer 45](./copddb/images/monomer_45.svg) | 2399-48-6 | Tetrahydrofurfuryl acrylate ! |
-| ![monomer 46](./copddb/images/monomer_46.svg) | 818-61-1 | 2-Hydroxyethyl acrylate ! |
-| ![monomer 47](./copddb/images/monomer_47.svg) | 999-61-1 | 2-Hydroxypropyl acrylate ! |
-| ![monomer 48](./copddb/images/monomer_48.svg) | 119692-59-0 | 4-Hydroxybutyl acrylate ! |
-| ![monomer 49](./copddb/images/monomer_49.svg) | 48145-04-6 | 2-Phenoxyethyl acrylate ! |
+| ![monomer 19](./copddb/images/monomer_19.svg) | 2867-47-2 | 2-(Dimethylamino)ethyl methacrylate |
+| ![monomer 20](./copddb/images/monomer_20.svg) | 105-16-8 | (2-Diethylamino)ethyl methacrylate |
+| ![monomer 21](./copddb/images/monomer_21.svg) | 34759-34-7 | Dicyclopentanyl methacrylate |
+| ![monomer 22](./copddb/images/monomer_22.svg) | 68586-19-6 | Dicyclopentenyloxyethyl methacrylate |
+| ![monomer 23](./copddb/images/monomer_23.svg) | 2455-24-5 | Tetrahydrofurfuryl methacrylate |
+| ![monomer 24](./copddb/images/monomer_24.svg) | 41988-14-1 | (3-Ethyloxetan-3-yl)methyl acrylate |
+| ![monomer 25](./copddb/images/monomer_25.svg) | 2628-16-2 | 4-Acetoxystyrene |
+| ![monomer 26](./copddb/images/monomer_26.svg) | 79-06-1 | Acrylamide |
+| ![monomer 27](./copddb/images/monomer_27.svg) | 15214-89-8 | (1,1-Dimethyl-2-sulfoethyl)acrylamide |
+| ![monomer 28](./copddb/images/monomer_28.svg) | 79-10-7 | Acrylic acid |
+| ![monomer 29](./copddb/images/monomer_29.svg) | 96-33-3 | Methyl acrylate |
+| ![monomer 30](./copddb/images/monomer_30.svg) | 93841-48-6 | Isooctadecyl acrylate |
+| ![monomer 31](./copddb/images/monomer_31.svg) | 51952-49-9 | Isononyl acrylate |
+| ![monomer 32](./copddb/images/monomer_32.svg) | 5888-33-5 | Isobornyl acrylate |
+| ![monomer 33](./copddb/images/monomer_33.svg) | 106-63-8 | Isobutyl acrylate |
+| ![monomer 34](./copddb/images/monomer_34.svg) | 2499-59-4 | *n*-Octyl acrylate |
+| ![monomer 35](./copddb/images/monomer_35.svg) | 216581-76-9 | 3-Hydroxy-1-adamantyl acrylate |
+| ![monomer 36](./copddb/images/monomer_36.svg) | 2478-10-6 | 4-Hydroxybutyl acrylate |
+| ![monomer 37](./copddb/images/monomer_37.svg) | 86273-46-3 | Vinyl ethoxyethyl acrylate |
+| ![monomer 38](./copddb/images/monomer_38.svg) | 1663-39-4 | *tert*-Butyl acrylate |
+| ![monomer 39](./copddb/images/monomer_39.svg) | 65983-31-5 | Dicyclopentenyloxyethyl acrylate |
+| ![monomer 40](./copddb/images/monomer_40.svg) | 3121-61-7 | 2-Methoxyethyl acrylate |
+| ![monomer 41](./copddb/images/monomer_41.svg) | 2156-97-0 | Dodecyl acrylate |
+| ![monomer 42](./copddb/images/monomer_42.svg) | 32002-24-7 | Ethyl 3,3-diethoxyacrylate |
+| ![monomer 43](./copddb/images/monomer_43.svg) | 23117-36-4 | 1,4-Cyclohexanedimethanol monoacrylate |
+| ![monomer 44](./copddb/images/monomer_44.svg) | 4813-57-4 | Stearyl acrylate |
+| ![monomer 45](./copddb/images/monomer_45.svg) | 2399-48-6 | Tetrahydrofurfuryl acrylate |
+| ![monomer 46](./copddb/images/monomer_46.svg) | 818-61-1 | 2-Hydroxyethyl acrylate |
+| ![monomer 47](./copddb/images/monomer_47.svg) | 999-61-1 | 2-Hydroxypropyl acrylate |
+| ![monomer 48](./copddb/images/monomer_48.svg) | 119692-59-0 | 4-(2,3-epoxypropoxy)butylacrylate |
+| ![monomer 49](./copddb/images/monomer_49.svg) | 48145-04-6 | 2-Hydroxypropyl acrylate |
 
 ## Installation
 ### Dependencies
