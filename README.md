@@ -32,7 +32,7 @@ The dataset is provided in [csv](./copddb/datasets/data/PropagationQuantumChem_2
 | Volume_Rad | Volume of M<sub>1</sub>* |
 | Volume_Mon | Volume of M<sub>2</sub> |
 | CCdist_TS | Reactive C-C bond distance at the TS structure |
-| Sum_MW | Sum of molecular weight of M<sub>1</sub>* and M<sub>2</sub> |
+| Sum_MW | Sum of molecular weights of M<sub>1</sub>* and M<sub>2</sub> |
 | logP_Rad | Partition coefficient log<I>P</I> of M<sub>1</sub>* |
 | logP_Mon | Partition coefficient log<I>P</I> of M<sub>2</sub> |
 
@@ -90,9 +90,9 @@ List of monomers.
 | ![monomer 48](./copddb/images/monomer_48.svg) | 119692-59-0 | 4-(2,3-epoxypropoxy)butylacrylate |
 | ![monomer 49](./copddb/images/monomer_49.svg) | 48145-04-6 | 2-Hydroxypropyl acrylate |
 
-## Installation
+## Quick Start
 ### Dependencies
-CopDDB includes Python modules for reading and processing csv files. In a Python environment, By utilizing these modules in a Python environment, you can easily manipulate and analyze the CopDDB. CopDDB uses the following external libraries.
+CopDDB includes Python modules for reading and processing csv files. We have confirmed that the code can be run with the following external libraries.
 - NumPy
 - pandas
 - RDKit
@@ -102,7 +102,7 @@ CopDDB includes Python modules for reading and processing csv files. In a Python
 git clone https://github.com/hatanaka-lab/CopDDB
 ```
 
-### Before Retrieving Descriptors
+### Before Getting Descriptors
 To obtain the list of SMILES registered in CopDDB, use the `copddb.datasets.get_available_smiles()` function.
 ```python
 >>> copddb.datasets.get_available_smiles()
@@ -115,8 +115,8 @@ To obtain the names of descriptors registered in CopDDB, use the `copddb.dataset
 ['Radical', 'Monomer', 'DE_decomposition_tail', 'DE_decomposition_head', 'DE_precursor', 'DE_TS', 'DE_product', 'DE_barrier', 'DE_reaction', 'E_Rad_SOMO', 'E_Rad_LUMO', 'E_Mon_HOMO', 'E_Mon_LUMO', 'DE_SHgap', 'DE_SLgap', 'VBur_R228_Mon', 'VBur_R350_Mon', 'VBur_R228_Rad', 'VBur_R350_Rad', 'Volume_MonteCarlo_Mon', 'Volume_MonteCarlo_Rad', 'CCdist_TS']
 ```
 
-### Example 1: Obraining descriptors using SMILES strings.
-The most basic usage is to retrieve descriptors collected for propagation reactions using the `copddb.datasets.descriptors_from_smiles()` function. The following example retrieves descriptors in the form of a `pandas.DataFrame` using the SMILES for a radical `smi_rad` and a monomer `smi_mon`.
+### Example 1: Getting descriptors of radical-monomer pairs.
+The most basic usage is to get descriptors for a radical-monomer pair using the `copddb.datasets.descriptors_from_smiles()` function. The following example provides the descriptors in the form of a `pandas.DataFrame` using the SMILES for a radical `smi_rad` and a monomer `smi_mon`.
 
 ```python
 from copddb
@@ -126,7 +126,7 @@ smi_mon = "C=CC(=O)O"
 
 descriptor = copddb.datasets.descriptors_from_smiles(smi_rad, smi_mon)
 ```
-The output of the descriptor is as follows.
+The output of the descriptors is as follows.
 ```
 >>> descriptor
       DE_decomposition_tail  DE_decomposition_head  ...  Volume_MonteCarlo_Rad  CCdist_TS
@@ -135,11 +135,11 @@ The output of the descriptor is as follows.
 [1 rows x 20 columns]
 ```
 
-If you input SMILES that are not listed in the CopDDB, an empty DataFrame will be returned. Let's try using the ethene molecule `"C=C"`
+If you input SMILES that are not listed in CopDDB, an empty DataFrame will be returned. Let's try using the ethylene molecule `"C=C"`
 ```python
 descriptor = copddb.datasets.descriptors_from_smiles("C=C", smi_mon)
 ```
-The output of descriptor is as follows.
+The output of descriptors is as follows.
 ```python
 >>> descriptor
 Empty DataFrame
@@ -151,7 +151,7 @@ If you want to explicitly include missing values, use the `with_nan` option (whi
 ```python
 descriptor = copddb.datasets.descriptors_from_smiles("C=C", smi_mon, with_nan=True)
 ```
-The output of descriptor is as follows.
+The output of descriptors is as follows.
 ```python
 descriptor
       DE_decomposition_tail  DE_decomposition_head  ...  Volume_MonteCarlo_Rad  CCdist_TS
@@ -164,7 +164,7 @@ To include the input SMILES in the returned value, use the `with_smiles` option 
 ```python
 descriptor = copddb.datasets.descriptors_from_smiles("C=C", smi_mon, with_nan=True, with_smiles=True)
 ```
-The output of descriptor is as follows.
+The output of descriptors is as follows.
 ```python
 >>> descriptor
      Radical    Monomer  ...  Volume_MonteCarlo_Rad  CCdist_TS
@@ -173,7 +173,7 @@ The output of descriptor is as follows.
 [1 rows x 22 columns]
 ```
 
-SMILES can also be input as a `list` type. By using a `list`, you can obtain multiple descriptors at the same time. For example, you can use it as follows.
+SMILES can also be input as a `list` type. By using a `list`, you can obtain multiple descriptors at the same time as follows.
 ```python
 smi_list = [
     ["C=C(C)C(=O)OC", "C=C(C)C(=O)OC"],
