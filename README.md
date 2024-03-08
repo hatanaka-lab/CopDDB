@@ -52,7 +52,7 @@ List of monomers.
 | ![monomer 10](./copddb/images/monomer_10.svg) | 688-84-6 | 2-Ethylhexyl methacrylate |
 | ![monomer 11](./copddb/images/monomer_11.svg) | 142-90-5 | Dodecyl methacrylate |
 | ![monomer 12](./copddb/images/monomer_12.svg) | 32360-05-7 | Stearyl methacrylate |
-| ![monomer 13](./copddb/images/monomer_13.svg) | 101-43-9 | Cyclohexyl methacrylate |
+| ![monomer 13](./copddb/images/monomer_13.svg) | 101-43-9 | Cyclohexyl methacrylate | CHMA |
 | ![monomer 14](./copddb/images/monomer_14.svg) | 2495-37-6 | Benzyl methacrylate |
 | ![monomer 15](./copddb/images/monomer_15.svg) | 868-77-9 | 2-Hydroxyethyl methacrylate |
 | ![monomer 16](./copddb/images/monomer_16.svg) | 923-26-2 | 2-Hydroxypropyl methacrylate |
@@ -62,9 +62,9 @@ List of monomers.
 | ![monomer 20](./copddb/images/monomer_20.svg) | 105-16-8 | (2-Diethylamino)ethyl methacrylate |
 | ![monomer 21](./copddb/images/monomer_21.svg) | 34759-34-7 | Dicyclopentanyl methacrylate |
 | ![monomer 22](./copddb/images/monomer_22.svg) | 68586-19-6 | Dicyclopentenyloxyethyl methacrylate |
-| ![monomer 23](./copddb/images/monomer_23.svg) | 2455-24-5 | Tetrahydrofurfuryl methacrylate |
+| ![monomer 23](./copddb/images/monomer_23.svg) | 2455-24-5 | Tetrahydrofurfuryl methacrylate | THFMA |
 | ![monomer 24](./copddb/images/monomer_24.svg) | 41988-14-1 | (3-Ethyloxetan-3-yl)methyl acrylate |
-| ![monomer 25](./copddb/images/monomer_25.svg) | 2628-16-2 | 4-Acetoxystyrene |
+| ![monomer 25](./copddb/images/monomer_25.svg) | 2628-16-2 | 4-Acetoxystyrene | PACS |
 | ![monomer 26](./copddb/images/monomer_26.svg) | 79-06-1 | Acrylamide |
 | ![monomer 27](./copddb/images/monomer_27.svg) | 15214-89-8 | (1,1-Dimethyl-2-sulfoethyl)acrylamide |
 | ![monomer 28](./copddb/images/monomer_28.svg) | 79-10-7 | Acrylic acid |
