@@ -14,6 +14,57 @@ from ..utils import (
     )
 
 
+def build_pairs_including_m2(m1s=[], m2="",
+                             with_nan=False,
+                             with_smiles=False):
+    """
+    This function generates and returns a list of pairs from a m1 list and m2.
+
+    Args:
+        m1s (list): The list of monomers of M1.
+        m2 (str): The monomer that must be included.
+
+    Returns:
+        Bunch('data': pandas.DataFrame, 'm1s': list, 'm2': str) 
+    """
+    # Names of descriptors
+    desc_names = get_available_descriptors()
+    # (dict) to store information to be out.
+    preserve = {}
+    if with_smiles:
+        preserve.update({"Monomer 1": [], "Monomer 2":[]})
+    sufs = ["11", "12", "21"]
+    preserve.update({f"{name}_{suf}": [] for name in desc_names
+                                         for suf in sufs})
+    # It is written inefficiently to avoid pandas errors.
+    # This section could be rewritten in the future if possible.
+    for m1 in m1s:
+        if with_smiles:
+            preserve["Monomer 1"].append(m1)
+            preserve["Monomer 2"].append(m2)
+        for i_pair, smi_pair in enumerate([[m1, m1],
+                                           [m1, m2],
+                                           [m2, m1]]):
+            vals = descriptors_from_smiles(smi_pair, with_nan=True)
+            for name in desc_names:
+                i_col = vals.columns.get_loc(name)
+                val = vals.iloc[0, i_col]
+                preserve[f"{name}_{sufs[i_pair]}"].append(val)
+    # Make pandas.DataFrame
+    new_df = pd.DataFrame.from_dict(preserve)
+    # with_nan option
+    if with_nan:
+        mask = np.full(new_df.shape[0], True)
+    else:
+        mask = ~new_df.isnull().any(axis=1)
+    # Out
+    return Bunch(
+                 data=new_df[mask],
+                 m1s=m1s,
+                 m2=m2,
+                )
+
+
 def build_pair_variables_from_smiles_and_y(smiles=[], y=[],
                                            with_nan=False,
                                            with_smiles=False):
