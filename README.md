@@ -1,5 +1,7 @@
 # CopDDB
-This open source repository provides "Copolymer Descriptor Database (CopDDB)". This database includes parameter sets for radical-monomer pairs, which are applicable to the descriptors of copolymers. Details of each descriptor and applications to polymer informatics can be found at DOI:XXXXXXXXXXX. 
+This open source repository provides "Copolymer Descriptor Database (CopDDB)". This database includes parameter sets for radical-monomer pairs, which are applicable to the descriptors of copolymers. Details of each descriptor and applications to polymer informatics can be found in our preprint at [ChemRxiv].
+
+[ChemRxiv]: https://www.rsc.org/journals-books-databases/about-journals/digital-discovery/
 
 ## Dataset
 The dataset is provided in [csv](./copddb/datasets/data/PropagationQuantumChem_2023-12-13.csv) format and includes the following descriptors.
@@ -28,6 +30,7 @@ The dataset is provided in [csv](./copddb/datasets/data/PropagationQuantumChem_2
 | Volume_Rad | Volume of M<sub>1</sub>* |
 | Volume_Mon | Volume of M<sub>2</sub> |
 | CCdist_TS | Reactive C-C bond distance at the TS structure |
+| Dihedral_TS | Dihedral angle around the reactive C-C at the TS structure |
 | Sum_MW | Sum of molecular weights of M<sub>1</sub>* and M<sub>2</sub> |
 | logP_Rad | Partition coefficient log<I>P</I> of M<sub>1</sub>* |
 | logP_Mon | Partition coefficient log<I>P</I> of M<sub>2</sub> |
@@ -237,9 +240,9 @@ As shown in Example 1, you have the option to explicitly handle missing values b
 array([1, 2, 3, 4])
 ```
 
-### Example 3: Converting Parameters of Radical-Monomer Pairs to Descriptors of Monomer Pairs
+### Example 3: Converting Parameters of Radical-Monomer Pairs to Descriptors of Monomer Pairs (Part I)
 To apply the descriptors of radical-monomer pairs to build a ML model for copolymers, preprocessing of the discriptors is required. 
-When focusing on the reactivity ratio $r_1$, which is the ratio between the kinetic constants of the reactions in eqs. (1) and (2), <I>i.e.</I>, $k$<sub>11</sub> and $k$<sub>12</sub>, the descriptors of (M<sub>1</sub>**, M<sub>1</sub>) and (M<sub>1</sub>*, M<sub>2</sub>) could be appropriate for input of monomer pairs of copolymers. 
+When focusing on the reactivity ratio $r_1$, which is the ratio between the kinetic constants of the reactions in eqs. (1) and (2), <I>i.e.</I>, $k$<sub>11</sub> and $k$<sub>12</sub>, the descriptors of (M<sub>1</sub>\*, M<sub>1</sub>) and (M<sub>1</sub>\*, M<sub>2</sub>) could be appropriate for input of monomer pairs of copolymers. 
 
 $$
 M_1^* + M_1 \xrightarrow{k_{11}} M_1^* ~~~~(1)
@@ -249,16 +252,21 @@ $$
 M_1^* + M_2 \xrightarrow{k_{12}} M_2^* ~~~~(2)
 $$
 
-To combine the descriptors of multiple radical-monomer pairs, use the `copddb.datasets.build_pair_valiables_from_smiles_and_y()` function.
-In the `copddb.datasets.build_pair_variables_from_smiles_and_y()` function, the descriptors of multiple radical-monomer pairs are converted to thos of a monomer pair by appending the labels of the corresponding radical-monomer pairs.
+To combine the descriptors of these two radical-monomer pairs, use the `m1m2list_to_11_12()` function. With this function, the label of corresponding radical or monomer (1 or 2) is added to the tail of each descriptor name. 
+(For example, E_Rad_SOMO of M1* and E_TS of (M<sub>1</sub>*, M<sub>2</sub>) pair are converted to E_Rad_SOMO_1 and E_TS_12, respectively.) 
 
-##########################
+```python
+smi_list = [
+    ["C=C(C)C(=O)OC", "C=C(C)C(=O)OC"],
+    ["C=C(C)C(=O)OC", "C=CC(=O)O"],
+    ["CO/C=C\C(=O)OC", "C=Cc1ccccc1"]
+]
 
-For example, for Equations 1 and 2, the descriptor DE_TS becomes DE_TS_11 and DE_TS_12, respectively.
-Descriptors derived from a single molecule, such as the radical $M_i*$ or monomer $M_i$, are appended with only one number for the molecule.
-For instance, descriptors of molecular orbital energy like E_Rad_SOMO become E_Rad_SOMO_1.
+new_descriptors = copddb.datasets.m1m2list_to_11_12(smi_list)
+```
 
-Let's try using the same list of SMILES and target variables as in Example 2.
+The dataset of descriptors and objective variable can be also prepared with `build_11_12_variables_from_smiles_and_y()` function as follows.
+
 ```python
 smi_list = [
     ["C=C(C)C(=O)OC", "C=C(C)C(=O)OC"],
@@ -269,7 +277,7 @@ smi_list = [
 
 target = [1, 2, 3, 4] # Target variables
 
-new_dataset = copddb.datasets.build_pair_variables_from_smiles_and_y(smi_list, target)
+new_dataset = copddb.datasets.build_11_12_variables_from_smiles_and_y(smi_list, target)
 ```
 The contents of the new_dataset is as follows.
 ```python
@@ -298,6 +306,42 @@ Index(['DE_TS_11', 'DE_TS_12', 'DE_product_11', 'DE_product_12',
       dtype='object')
 ```
 
-Based on this idea, [ref1] rearranged the descriptors in CopDDB to create a set of descriptors and used them to build a predictive model for the copolymerization monomer reactivity ratio $r_1$.
+### Example 4: Converting Parameters of Radical-Monomer Pairs to Descriptors of Monomer Pairs (Part II)
+When focusing on the copolymers consisting of two monomers, M<sub>1</sub> (= St, GMA, PACS, THFMA, and CHMA) and M<sub>2</sub> (= MMA) for instance, the descriptors of three radical-monomer pairs, (M<sub>1</sub>\*, M<sub>1</sub>), (M<sub>1</sub>\*, MMA), (MMA\*, M<sub>1</sub>) could be used for the descriptos of the monomer pair of M<sub>1</sub> and MMA. These three descriptor sets can be formed by the `m1list_and_m2_to_11_12_21()` function as follows.
 
-[ref1]: https://www.rsc.org/journals-books-databases/about-journals/digital-discovery/
+```py
+m1list = [
+    "C=Cc1ccccc1", # St
+    "C=C(C)C(=O)OCC1CO1", # GMA
+    "C=Cc1ccc(OC(C)=O)cc1", # PACS
+    "C=C(C)C(=O)OCC1CCCO1", # THFMA
+    "C=C(C)C(=O)OC1CCCCC1", # CHMA
+]
+
+m2 = "C=C(C)C(=O)OC" # MMA
+
+new_dataset = copddb.datasets.m1list_and_m2_to_11_12_21(m1list, m2)
+```
+
+The contents of the new_dataset is as follows.
+
+```
+>>> new_dataset.keys()
+dict_keys(['data', 'm1s', 'm2'])
+
+>>> new_dataset.data
+   DE_tail_11  DE_tail_12  DE_tail_21  DE_head_11  DE_head_12  DE_head_21  ...  logP_Rad_11  logP_Rad_12  logP_Rad_21  logP_Mon_11  logP_Mon_12  logP_Mon_21
+0    0.038749    0.038749    0.038534    0.063061    0.063061    0.061518  ...          2.7          2.7          1.0          2.7          1.0          2.7
+1    0.038719    0.038719    0.038534    0.062134    0.062134    0.061518  ...          0.6          0.6          1.0          0.6          1.0          0.6
+2    0.038493    0.038493    0.038534    0.063246    0.063246    0.061518  ...          2.3          2.3          1.0          2.3          1.0          2.3
+3    0.037938    0.037938    0.038534    0.061257    0.061257    0.061518  ...          1.1          1.1          1.0          1.1          1.0          1.1
+4    0.039386    0.039386    0.038534    0.061804    0.061804    0.061518  ...          2.5          2.5          1.0          2.5          1.0          2.5
+
+[5 rows x 72 columns]
+
+>>> new_dataset.m1s
+['C=Cc1ccccc1', 'C=C(C)C(=O)OCC1CO1', 'C=Cc1ccc(OC(C)=O)cc1', 'C=C(C)C(=O)OCC1CCCO1', 'C=C(C)C(=O)OC1CCCCC1']
+
+>>> new_dataset.m2
+'C=C(C)C(=O)OC'
+```
