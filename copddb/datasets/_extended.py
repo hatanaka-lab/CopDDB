@@ -63,15 +63,15 @@ def m1m2list_to_11_12(smiles=[], with_nan=False, with_smiles=False):
                 )
 
 
-def build_pairs_including_m2(m1s=[], m2="",
-                             with_nan=False,
-                             with_smiles=False):
+def m1list_and_m2_to_11_12_21(m1s=[], m2="",
+                              with_nan=False,
+                              with_smiles=False):
     """
-    This function generates and returns a list of pairs from a m1 list and m2.
+    Generates and returns features from given M1 SMILES list and M2 SMILES.
 
     Args:
-        m1s (list): The list of monomers of M1.
-        m2 (str): The monomer that must be included.
+        m1s (list): The list of monomers of M1. ["A", "B", "C",... ].
+        m2 (str): The monomer that must be included. "Monomer 2" (SMILES).
 
     Returns:
         Bunch('data': pandas.DataFrame, 'm1s': list, 'm2': str) 
