@@ -100,27 +100,48 @@ def m1list_and_m2_to_11_12_21(m1s=[], m2="",
     """
     # Names of descriptors
     desc_names = get_available_descriptors()
+    # Get descriptor names derived from molecule (M* or M)
+    f_mol = os.path.dirname(__file__)+"/data/moleculeProperties.txt"
+    f_rad = os.path.dirname(__file__)+"/data/radicalProperties.txt"
+    mol_desc_names = [key for key in _read_text_to_list(f_mol)
+                      if key in desc_names]
+    rad_desc_names = [key for key in _read_text_to_list(f_rad)
+                      if key in desc_names]
     # (dict) to store information to be out.
     preserve = {}
     if with_smiles:
         preserve.update({"Monomer 1": [], "Monomer 2":[]})
     sufs = ["11", "12", "21"]
-    preserve.update({f"{name}_{suf}": [] for name in desc_names
-                                         for suf in sufs})
-    # It is written inefficiently to avoid pandas errors.
-    # This section could be rewritten in the future if possible.
+    for name in desc_names:
+        for suf in sufs:
+            if name in rad_desc_names:
+                preserve[f"{name}_{suf[0]}"] = []
+            elif name in mol_desc_names:
+                preserve[f"{name}_{suf[1]}"] = []
+            else:
+                preserve[f"{name}_{suf}"] = []
+    # The part to add features.
     for m1 in m1s:
         if with_smiles:
             preserve["Monomer 1"].append(m1)
             preserve["Monomer 2"].append(m2)
-        for i_pair, smi_pair in enumerate([[m1, m1],
-                                           [m1, m2],
-                                           [m2, m1]]):
+        for i_pair, smi_pair in enumerate([[m1, m1], [m1, m2], [m2, m1]]):
             vals = descriptors_from_smiles(smi_pair, with_nan=True)
             for name in desc_names:
                 i_col = vals.columns.get_loc(name)
                 val = vals.iloc[0, i_col]
-                preserve[f"{name}_{sufs[i_pair]}"].append(val)
+                if name in rad_desc_names:
+                    if i_pair == 0: # M1* + M1
+                        preserve[f"{name}_1"].append(val)
+                    elif i_pair == 2: # M2* + M1
+                        preserve[f"{name}_2"].append(val)
+                elif name in mol_desc_names:
+                    if i_pair == 0: # M1* + M1
+                        preserve[f"{name}_1"].append(val)
+                    elif i_pair == 1: # M1* + M2
+                        preserve[f"{name}_2"].append(val)
+                else:
+                    preserve[f"{name}_{sufs[i_pair]}"].append(val)
     # Make pandas.DataFrame
     new_df = pd.DataFrame.from_dict(preserve)
     # with_nan option
