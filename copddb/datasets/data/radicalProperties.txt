@@ -1,0 +1,8 @@
+DE_tail
+DE_head
+E_Rad_SOMO
+E_Rad_LUMO
+VBur_R228_Rad
+VBur_R350_Rad
+Volume_Rad
+logP_Rad

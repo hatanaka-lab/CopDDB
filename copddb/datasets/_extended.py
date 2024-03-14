@@ -31,13 +31,26 @@ def m1m2list_to_11_12(smiles=[], with_nan=False, with_smiles=False):
     """
     # Names of descriptors
     desc_names = get_available_descriptors()
+    # Get descriptor names derived from molecule (M* or M)
+    f_mol = os.path.dirname(__file__)+"/data/moleculeProperties.txt"
+    f_rad = os.path.dirname(__file__)+"/data/radicalProperties.txt"
+    mol_desc_names = [key for key in _read_text_to_list(f_mol)
+                      if key in desc_names]
+    rad_desc_names = [key for key in _read_text_to_list(f_rad)
+                      if key in desc_names]
     # (dict) to store information that will be output.
     preserve = {}
     if with_smiles:
         preserve.update({"Monomer 1": [], "Monomer 2": []})
     sufs = ["11", "12"]
-    preserve.update({f"{name}_{suf}": [] for name in desc_names
-                                         for suf in sufs})
+    for name in desc_names:
+        for suf in sufs:
+            if name in rad_desc_names:
+                preserve[f"{name}_{suf[0]}"] = []
+            elif name in mol_desc_names:
+                preserve[f"{name}_{suf[1]}"] = []
+            else:
+                preserve[f"{name}_{suf}"] = []
     # The part to add features.
     for m1, m2 in smiles:
         if with_smiles:
@@ -48,7 +61,16 @@ def m1m2list_to_11_12(smiles=[], with_nan=False, with_smiles=False):
             for name in desc_names:
                 i_col = vals.columns.get_loc(name)
                 val = vals.iloc[0, i_col]
-                preserve[f"{name}_{sufs[i_pair]}"].append(val)
+                if name in rad_desc_names:
+                    if i_pair == 0: # M1* + M1
+                        preserve[f"{name}_1"].append(val)
+                elif name in mol_desc_names:
+                    if i_pair == 0: # M1* + M1
+                        preserve[f"{name}_1"].append(val)
+                    else: # i_pair == 1, M1* + M2
+                        preserve[f"{name}_2"].append(val)
+                else:
+                    preserve[f"{name}_{sufs[i_pair]}"].append(val)
     # Make pandas.DataFrame
     new_df = pd.DataFrame.from_dict(preserve)
     # with_nan option
