@@ -1,10 +1,10 @@
 # CopDDB
 This open source repository provides "Copolymer Descriptor Database (CopDDB)". This database includes parameter sets for radical-monomer pairs, which are applicable to the descriptors of copolymers. Details of each descriptor and applications to polymer informatics can be found in our preprint at [ChemRxiv].
 
-[ChemRxiv]: https://www.rsc.org/journals-books-databases/about-journals/digital-discovery/
+[ChemRxiv]: https://chemrxiv.org/engage/chemrxiv/public-dashboard
 
 ## Dataset
-The dataset is provided in [csv](./copddb/datasets/data/PropagationQuantumChem_2023-12-13.csv) format and includes the following descriptors.
+The dataset is available as a [csv](./copddb/datasets/data/PropagationQuantumChem_2023-12-13.csv) file, which includes the following descriptors.
 
 |Descriptor name|Description|
 | --- | --- |
@@ -91,7 +91,7 @@ List of monomers.
 
 ## How to use
 ### Dependencies
-CopDDB includes Python modules for reading and processing csv files. We confirmed that the code works with Python 3.10.12, numpy 1.25.2, pandas 1.5.3, and RDKit 2023.09.5. 
+CopDDB includes Python modules for reading and processing csv files. We confirmed that the code works with Python 3.10.12, numpy 1.25.2, pandas 1.5.3, and RDKit 2023.09.5. [A sample code](./sample_script/sample1.ipynb) worked on Google Colab is available.
 
 
 ### User installation
@@ -102,6 +102,7 @@ git clone https://github.com/hatanaka-lab/CopDDB
 ### Before Getting Descriptors
 To obtain the list of SMILES of available monomers in CopDDB, use the `copddb.datasets.get_available_smiles()` function.
 ```python
+>>> from CopDDB import copddb
 >>> copddb.datasets.get_available_smiles()
 ['C=CC(=O)OC(C)(C)C', 'C=CC(=O)OCCCCCCCCCCCCCCCCCC', 'C=C(C)C(=O)OC12CC3CC(O)(CC(O)(C3)C1)C2', 'C=CC(=O)NC(C)(C)CS(=O)(=O)O', 'C=CC(=O)OC1C[C@@H]2CC[C@@]1(C)C2(C)C', 'C=C(C)C(=O)OC', 'C=CC(=O)OCC(C)O', 'C=C(C)C(=O)OC(C)(C)C', 'C=C(C)C(=O)OCC(C)C', 'C=C(C)C(=O)OCc1ccccc1', 'C=C(C)C(=O)O', 'C=C(C)C(=O)OCCCCCCCCCCCCCCCCCC', 'C=COCCOCCOC(=O)C=C', 'C=C(C)C(=O)OCCN(CC)CC', 'C=C(C)C(=O)OCC(CC)CCCC', 'C=C(C)C(=O)OCC(C)O', 'C=C(C)C(=O)OCCCC', 'C=CC(=O)OCCOC', 'C=CC(=O)OCC1(CC)COC1', 'C=CC(=O)OCCCCOCC1CO1', 'C=CC(=O)OCCOc1ccccc1', 'C=CC(=O)OCCCCCCC(C)C', 'C=Cc1ccc(OC(C)=O)cc1', 'C=CC(N)=O', 'C=C(C)C(=O)OC1CCCCC1', 'C=C(C)C(=O)OCCO', 'C=C(C)C(=O)O[C@@]12C[C@H]3C[C@@H](C1)C[C@](O)(C3)C2', 'C=CC(=O)OCCCCCCCCCCCC', 'C=C(C)C(=O)OCCCCCCCCCCCC', 'C=Cc1ccccc1', 'C=CC(=O)OCC1CCCO1', 'C=C(C)C(=O)OCC1(CC)COC1', 'C=C(C)C(=O)OC1CC2CC1C1CCCC21', 'C=C(C)C(=O)OCCOC1CC2CC1C1C=CCC21', 'C=CC(=O)OCC(C)C', 'C=C(C)C(=O)OCCN(C)C', 'C=C(C)C(=O)OCC', 'C=CC(=O)OCC1CCC(CO)CC1', 'C=C(C)C(=O)OCC1CO1', 'C=CC(=O)OCCOC1CC2CC1C1CC=CC21', 'C=CC(=O)O', 'C=CC(=O)OC', 'C=CC(=O)OCCO', 'CCOC(=O)C=C(OCC)OCC', 'C=CC(=O)OCCCCCCCCCCCCCCCC(C)C', 'C=CC(=O)OCCCCCCCC', 'C=C(C)C(=O)OCC1CCCO1', 'CO/C=C\\C(=O)OC', 'C=CC(=O)OCCCCO', 'C=CC(=O)O[C@@]12C[C@H]3C[C@@H](C1)C[C@](O)(C3)C2']
 ```
@@ -116,7 +117,7 @@ To obtain the names of descriptors registered in CopDDB, use the `copddb.dataset
 The most basic usage is to get descriptors for a radical-monomer pair using the `copddb.datasets.descriptors_from_smiles()` function. The following example provides the descriptors in the form of a `pandas.DataFrame` from the SMILES of a radical `smi_rad` and a monomer `smi_mon`.
 
 ```python
-from copddb
+from CopDDB import copddb
 
 smi_rad = "C=CC(=O)OCCCCCCCCCCCC"
 smi_mon = "C=CC(=O)O"
@@ -134,7 +135,7 @@ The output of the descriptors is as follows.
 
 If you input SMILES that are not listed in CopDDB, an empty DataFrame will be returned. When you input ethylene `"C=C"`,
 ```python
-descriptor = copddb.datasets.descriptors_from_smiles("C=C", smi_mon)
+>>> descriptor = copddb.datasets.descriptors_from_smiles("C=C", smi_mon)
 ```
 The output of descriptors is as follows.
 ```python
@@ -182,7 +183,7 @@ descriptors = copddb.datasets.descriptors_from_smiles(smi_list)
 ```
 The output of descriptors is as follows.
 ```python
-descriptors
+>>> descriptors
      DE_decomposition_tail  DE_decomposition_head  ...  Volume_MonteCarlo_Rad  CCdist_TS
 0                 0.038534               0.061518  ...               103.2494   2.254882
 28                0.038534               0.061518  ...               103.2494   2.248237
@@ -194,7 +195,8 @@ descriptors
 ### Example 2: Creating a Dataset from a List of SMILES and a List of Target Variables
 When you have radical-monomer pairs and their corresponding target variables, use the `copddb.datasets.build_dataset_from_smiles_and_y()` function to create a dataset including both descriptors and target variables. The function is useful for removing missing values in descriptors. The resulting dataset is returned as a `Bunch` object.
 
-```python 
+```python
+from CopDDB import copddb
 smi_list = [
     ["C=C(C)C(=O)OC", "C=C(C)C(=O)OC"],
     ["C=C(C)C(=O)OC", "C=CC(=O)O"],
@@ -256,6 +258,7 @@ To combine the descriptors of these two radical-monomer pairs, use the `m1m2list
 (For example, E_Rad_SOMO of M1* and E_TS of (M<sub>1</sub>*, M<sub>2</sub>) pair are converted to E_Rad_SOMO_1 and E_TS_12, respectively.) 
 
 ```python
+from CopDDB import copddb
 smi_list = [
     ["C=C(C)C(=O)OC", "C=C(C)C(=O)OC"],
     ["C=C(C)C(=O)OC", "C=CC(=O)O"],
@@ -310,6 +313,7 @@ Index(['DE_TS_11', 'DE_TS_12', 'DE_product_11', 'DE_product_12',
 When focusing on the copolymers consisting of two monomers, M<sub>1</sub> (= St, GMA, PACS, THFMA, and CHMA) and M<sub>2</sub> (= MMA) for instance, the descriptors of three radical-monomer pairs, (M<sub>1</sub>\*, M<sub>1</sub>), (M<sub>1</sub>\*, MMA), (MMA\*, M<sub>1</sub>) could be used for the descriptos of the monomer pair of M<sub>1</sub> and MMA. These three descriptor sets can be formed by the `m1list_and_m2_to_11_12_21()` function as follows.
 
 ```py
+from CopDDB import copddb
 m1list = [
     "C=Cc1ccccc1", # St
     "C=C(C)C(=O)OCC1CO1", # GMA
