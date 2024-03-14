@@ -312,3 +312,43 @@ Index(['DE_TS_11', 'DE_TS_12', 'DE_product_11', 'DE_product_12',
 このアイディアをもとにして、[ref1] では CopDDB の記述子を並べ直して記述子のデータセットを作り、そのデータセットを用いて反応性比 $r_1$ の予想モデルを作成しました。
 
 [ref1]: https://www.rsc.org/journals-books-databases/about-journals/digital-discovery/
+
+# ここから追加分
+新使用例 3
+この例では、"論文" の VAE パートで使われた特徴量の生成を行います。この操作は `m1list_and_m2_to_11_12_21` 関数を使って行います。引数には SMILES リストの `m1list` と単一の SMILES `m2` が使われます。 
+```py
+m1list = [
+    "C=Cc1ccccc1", # St
+    "C=C(C)C(=O)OCC1CO1", # GMA
+    "C=Cc1ccc(OC(C)=O)cc1", # PACS
+    "C=C(C)C(=O)OCC1CCCO1", # THFMA
+    "C=C(C)C(=O)OC1CCCCC1", # CHMA
+]
+
+m2 = "C=C(C)C(=O)OC"
+
+new_dataset = copddb.datasets.m1list_and_m2_to_11_12_21(m1list, m2)
+```
+
+中身は以下の通りです。
+
+```
+>>> new_dataset.keys()
+dict_keys(['data', 'm1s', 'm2'])
+
+>>> new_dataset.data
+   DE_tail_11  DE_tail_12  DE_tail_21  DE_head_11  DE_head_12  DE_head_21  ...  logP_Rad_11  logP_Rad_12  logP_Rad_21  logP_Mon_11  logP_Mon_12  logP_Mon_21
+0    0.038749    0.038749    0.038534    0.063061    0.063061    0.061518  ...          2.7          2.7          1.0          2.7          1.0          2.7
+1    0.038719    0.038719    0.038534    0.062134    0.062134    0.061518  ...          0.6          0.6          1.0          0.6          1.0          0.6
+2    0.038493    0.038493    0.038534    0.063246    0.063246    0.061518  ...          2.3          2.3          1.0          2.3          1.0          2.3
+3    0.037938    0.037938    0.038534    0.061257    0.061257    0.061518  ...          1.1          1.1          1.0          1.1          1.0          1.1
+4    0.039386    0.039386    0.038534    0.061804    0.061804    0.061518  ...          2.5          2.5          1.0          2.5          1.0          2.5
+
+[5 rows x 72 columns]
+
+>>> new_dataset.m1s
+['C=Cc1ccccc1', 'C=C(C)C(=O)OCC1CO1', 'C=Cc1ccc(OC(C)=O)cc1', 'C=C(C)C(=O)OCC1CCCO1', 'C=C(C)C(=O)OC1CCCCC1']
+
+>>> new_dataset.m2
+'C=C(C)C(=O)OC'
+```
