@@ -114,9 +114,9 @@ def m1list_and_m2_to_11_12_21(m1s=[], m2="",
                 )
 
 
-def build_pair_variables_from_smiles_and_y(smiles=[], y=[],
-                                           with_nan=False,
-                                           with_smiles=False):
+def build_11_12_variables_from_smiles_and_y(smiles=[], y=[],
+                                            with_nan=False,
+                                            with_smiles=False):
     """
 
     Expranation
