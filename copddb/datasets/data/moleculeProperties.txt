@@ -1,13 +1,6 @@
-DE_decomposition_tail
-DE_decomposition_head
-DE_precursor
-E_Rad_SOMO
-E_Rad_LUMO
 E_Mon_HOMO
 E_Mon_LUMO
 VBur_R228_Mon
 VBur_R350_Mon
-VBur_R228_Rad
-VBur_R350_Rad
-Volume_MonteCarlo_Mon
-Volume_MonteCarlo_Rad
+Volume_Mon
+logP_Mon
