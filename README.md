@@ -135,7 +135,7 @@ The output of the descriptors is as follows.
 
 If you input SMILES that are not listed in CopDDB, an empty DataFrame will be returned. When you input ethylene `"C=C"`,
 ```python
-descriptor = copddb.datasets.descriptors_from_smiles("C=C", smi_mon)
+>>> descriptor = copddb.datasets.descriptors_from_smiles("C=C", smi_mon)
 ```
 The output of descriptors is as follows.
 ```python
