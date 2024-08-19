@@ -1,7 +1,7 @@
 # CopDDB
 This open source repository provides "Copolymer Descriptor Database (CopDDB)". This database includes parameter sets for radical-monomer pairs, which are applicable to the descriptors of copolymers. Details of each descriptor and applications to polymer informatics can be found in our preprint at [ChemRxiv].
 
-[ChemRxiv]: https://chemrxiv.org/engage/chemrxiv/article-details/65e6b5e69138d23161b08ac0
+[ChemRxiv]: https://chemrxiv.org/engage/chemrxiv/article-details/66b845265101a2ffa8f356cd
 
 ## Dataset
 The dataset is available as a [csv](./copddb/datasets/data/PropagationQuantumChem_2023-12-13.csv) file, which includes the following descriptors.
