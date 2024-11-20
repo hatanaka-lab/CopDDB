@@ -5,6 +5,7 @@ This open source repository provides "Copolymer Descriptor Database (CopDDB)". T
 
 ## Dataset
 The dataset is available as a [csv](./copddb/datasets/data/PropagationQuantumChem_2024-03-12.csv) file, which includes the following descriptors.
+Additionally, a molecular structure file [xyz](./copddb/datasets/data/CartesianCoords_2024-03-12.xyz) is available.
 
 |Descriptor name|Description|
 | --- | --- |
