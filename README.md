@@ -5,6 +5,7 @@ This open source repository provides "Copolymer Descriptor Database (CopDDB)". T
 
 ## Dataset
 The dataset is available as a [csv](./copddb/datasets/data/PropagationQuantumChem_2024-03-12.csv) file, which includes the following descriptors.
+Additionally, a molecular structure file [xyz](./copddb/datasets/data/CartesianCoords_2024-03-12.xyz) is available.
 
 |Descriptor name|Description|
 | --- | --- |
@@ -12,7 +13,7 @@ The dataset is available as a [csv](./copddb/datasets/data/PropagationQuantumChe
 | Monomer | SMILES for a monomer (M<sub>2</sub>) |
 | DE_tail | Reaction energy for the addition of a model initiator radical (Me*) to M<sub>1</sub> at the tail position |
 | DE_head | Reaction energy for the addition of a model initiator radical (Me*) to M<sub>1</sub> at the head position, which affords M<sub>1</sub>* |
-| DE_precursor | Relative energy of the precurser from the dissociation limit (M<sub>1</sub>* and M<sub>2</sub>) |
+| DE_precursor | Relative energy of the precursor from the dissociation limit (M<sub>1</sub>* and M<sub>2</sub>) |
 | DE_TS | Relative energy of the TS of C-C bond formation from the dissociation limit (M<sub>1</sub>* and M<sub>2</sub>) |
 | DE_product | Relative energy of the product from the dissociation limit (M<sub>1</sub>* and M<sub>2</sub>) |
 | DE_barrier |  Activation barrier for the C-C bond formation (<I>i.e.</I>, the energy difference between the precursor and the TS) |
@@ -32,7 +33,7 @@ The dataset is available as a [csv](./copddb/datasets/data/PropagationQuantumChe
 | CCdist_TS | Reactive C-C bond distance at the TS structure |
 | Dihedral_TS | Dihedral angle around the reactive C-C at the TS structure |
 | Sum_MW | Sum of molecular weights of M<sub>1</sub>* and M<sub>2</sub> |
-| logP_Rad | Partition coefficient log<I>P</I> of M<sub>1</sub>* |
+| logP_Rad | Partition coefficient log<I>P</I> of M<sub>1</sub> |
 | logP_Mon | Partition coefficient log<I>P</I> of M<sub>2</sub> |
 
 List of monomers.
